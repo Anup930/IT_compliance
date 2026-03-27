@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT & HR Compliance Form v3.3 (Responsive)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1e40af;
+            --secondary: #0d9488;
+            --accent: #e11d48;
+            --success: #10b981;
+            --light: #f8fafc;
+            --border: #cbd5e1;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #ccfbf1 100%);
+            color: var(--text-dark);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            width: 100%; /* Ensures it doesn't overflow */
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #312e81 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 { font-size: 28px; margin-bottom: 10px; font-weight: 700; line-height: 1.3;}
+        
+        /* Wizard Steps Indicator */
+        .step-indicator {
+            display: flex; justify-content: space-between; max-width: 500px; margin: 25px auto 0; position: relative;
+        }
+        .step-indicator::before {
+            content: ''; position: absolute; top: 15px; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.2); z-index: 1;
+        }
+        .step-indicator-fill {
+            position: absolute; top: 15px; left: 0; height: 3px; background: #34d399; z-index: 1; transition: 0.4s ease; width: 0%;
+        }
+        .step-dot {
+            width: 34px; height: 34px; background: #312e81; border: 3px solid rgba(255,255,255,0.5);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; z-index: 2; position: relative; transition: 0.3s;
+        }
+        .step-dot.active { background: #34d399; border-color: white; color: #0f172a;}
+        .step-dot.completed { background: #10b981; border-color: white; color: white;}
+
+        .form-wrapper { padding: 40px; }
+
+        .step-content { display: none; animation: fadeIn 0.4s ease; }
+        .step-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-title { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;}
+        
+        input[type="text"], input[type="email"], input[type="date"] {
+            width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px; margin-bottom: 15px;
+        }
+        input:focus { border-color: var(--primary); outline: none; }
+        .error-border { border-color: var(--accent) !important; background: #fff1f2; }
+
+        .yes-no-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; margin-bottom: 20px;}
+        .radio-item {
+            display: flex; align-items: center; gap: 10px; padding: 12px 15px;
+            border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: 0.2s;
+        }
+        .radio-item.error-border { border-color: var(--accent); }
+        .radio-item:hover { background: #f8fafc; }
+        .radio-item input[type="radio"]:checked + span { color: var(--primary); font-weight: 700; }
+
+        .file-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;}
+        .file-upload-card {
+            border: 2px dashed #94a3b8; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: #f8fafc;
+        }
+        .file-upload-card.error-border { border-color: var(--accent); background: #fff1f2; }
+        .file-upload-card input[type="file"] { display: none; }
+        .file-preview { margin-top: 10px; font-size: 12px; color: var(--success); font-weight: 600; word-break: break-all;}
+
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; border-top: 2px solid #f1f5f9; padding-top: 20px;}
+        button { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; transition: 0.3s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #1e3a8a; }
+        .btn-secondary { background: #e2e8f0; color: var(--text-dark); }
+        .btn-secondary:hover { background: #cbd5e1; }
+        
+        .message { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; font-weight: 500;}
+        .message.show { display: block; }
+        .message.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .message.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .validation-msg { color: var(--accent); font-size: 13px; display: none; margin-top: -10px; margin-bottom: 15px;}
+
+        /* --- DYNAMIC LOADER CSS --- */
+        .loader-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(5px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .loader-overlay.show { opacity: 1; visibility: visible; }
+        
+        .loader-box {
+            background: white; padding: 30px 40px; border-radius: 16px;
+            text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            max-width: 350px; width: 90%; transform: scale(0.9); transition: 0.3s;
+        }
+        .loader-overlay.show .loader-box { transform: scale(1); }
+
+        .spinner {
+            width: 50px; height: 50px; border: 5px solid #f1f5f9;
+            border-top: 5px solid var(--primary); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .loader-text { font-weight: 600; color: var(--text-dark); font-size: 16px; margin-bottom: 5px;}
+        .loader-subtext { font-size: 13px; color: var(--text-light); }
+
+
+        /* =========================================================
+           MOBILE RESPONSIVENESS (MEDIA QUERIES)
+           ========================================================= */
+        @media (max-width: 768px) {
+            body { padding: 15px 10px; }
+            .header { padding: 30px 20px; }
+            .header h1 { font-size: 24px; }
+            .form-wrapper { padding: 25px 20px; }
+            
+            /* Stack Yes/No questions on mobile */
+            .yes-no-group { grid-template-columns: 1fr; gap: 10px;}
+            
+            /* Make buttons full width and stack them */
+            .nav-buttons { flex-direction: column-reverse; gap: 12px; align-items: stretch;}
+            .nav-buttons button { width: 100%; padding: 14px; }
+            
+            /* Step indicator adjustments */
+            .step-dot { width: 30px; height: 30px; font-size: 14px; }
+            .step-indicator::before, .step-indicator-fill { top: 13px; }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 { font-size: 20px; }
+            .section-title { font-size: 18px; }
+            .loader-box { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loaderOverlay" class="loader-overlay">
+        <div class="loader-box">
+            <div class="spinner" id="loaderSpinner"></div>
+            <div id="loaderText" class="loader-text">Processing...</div>
+            <div id="loaderSubText" class="loader-subtext">Please wait a moment</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>📋 IT & HR Compliance Portal</h1>
+            <p>Secure Employee Verification System</p>
+            
+            <div class="step-indicator">
+                <div class="step-indicator-fill" id="stepProgress"></div>
+                <div class="step-dot active" id="dot1">1</div>
+                <div class="step-dot" id="dot2">2</div>
+                <div class="step-dot" id="dot3">3</div>
+                <div class="step-dot" id="dot4">4</div>
+            </div>
+        </div>
+
+        <div class="form-wrapper">
+            <div id="messageContainer"></div>
+
+            <form id="complianceForm">
+                
+                <div class="step-content active" id="step1">
+                    <div class="section-title">🔐 Identity Verification</div>
+                    <p style="color: var(--text-light); margin-bottom: 15px;">Enter your details to begin.</p>
+                    
+                    <label style="font-weight: 600;">Employee ID *</label>
+                    <input type="text" id="empId" name="empId" placeholder="e.g. EMP001" required>
+                    
+                    <label style="font-weight: 600;">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@company.com" required>
+
+                    <div id="empInfoBox" style="display:none; background: #eff6ff; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #bfdbfe; font-size: 14px;">
+                        <strong style="color:var(--primary)">Welcome, <span id="empNameDisplay"></span></strong> (<span id="empDeptDisplay"></span>)
+                    </div>
+
+                    <div class="validation-msg" id="msg-step1">Please enter both ID and Email to verify.</div>
+
+                    <div class="nav-buttons" style="justify-content: flex-end;">
+                        <button type="button" class="btn-primary" id="verifyBtn" onclick="verifyAndNext()">Verify & Continue ➔</button>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step2">
+                    <div class="section-title">💻 IT Compliance</div>
+                    
+                    <label style="font-weight: 600;">1. Have you read the IT Compliance policy? *</label>
+                    <div class="yes-no-group">
+                        <label class="radio-item"><input type="radio" name="readCompliance" value="yes" required><span>Yes</span></label>
+                        <label class="radio-item"><input type="radio" name="readCompliance" value="no" required><span>No</span></label>
+                    </div>
+
+                    <label style="font-weight: 600;">2. Are you aware of IT Compliance requirements? *</label>
+                    <div class="yes-no-group">
+                        <label class="radio-item"><input type="radio" name="awareCompliance" value="yes" required><span>Yes</span></label>
+                        <label class="radio-item"><input type="radio" name="awareCompliance" value="no" required><span>No</span></label>
+                    </div>
+
+                    <label style="font-weight: 600;">3. Have you read all documents related to IT Compliance? *</label>
+                    <div class="yes-no-group">
+                        <label class="radio-item"><input type="radio" name="readAllDocs" value="yes" required><span>Yes</span></label>
+                        <label class="radio-item"><input type="radio" name="readAllDocs" value="no" required><span>No</span></label>
+                    </div>
+
+                    <div class="validation-msg" id="msg-step2">Please answer all questions above.</div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-secondary" onclick="prevStep(1)">🡐 Back</button>
+                        <button type="button" class="btn-primary" onclick="validateAndNext(2, 3)">Next Step ➔</button>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step3">
+                    <div class="section-title">📸 System Screenshots</div>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">Please upload all 5 required folder screenshots.</p>
+                    
+                    <div class="file-grid">
+                        <div class="file-upload-card" id="card-fileDesktop" onclick="document.getElementById('fileDesktop').click()">
+                            <div style="font-size: 24px;">🖥️</div>
+                            <div style="font-weight: 600; color: var(--primary);">Desktop Folder *</div>
+                            <input type="file" id="fileDesktop" name="fileDesktop" accept="image/*" required onchange="handleFile(event, 'fileDesktop')">
+                            <div class="file-preview" id="preview-fileDesktop"></div>
+                        </div>
+
+                        <div class="file-upload-card" id="card-fileDownloads" onclick="document.getElementById('fileDownloads').click()">
+                            <div style="font-size: 24px;">⬇️</div>
+                            <div style="font-weight: 600; color: var(--primary);">Downloads Folder *</div>
+                            <input type="file" id="fileDownloads" name="fileDownloads" accept="image/*" required onchange="handleFile(event, 'fileDownloads')">
+                            <div class="file-preview" id="preview-fileDownloads"></div>
+                        </div>
+
+                        <div class="file-upload-card" id="card-fileDocuments" onclick="document.getElementById('fileDocuments').click()">
+                            <div style="font-size: 24px;">📄</div>
+                            <div style="font-weight: 600; color: var(--primary);">Documents Folder *</div>
+                            <input type="file" id="fileDocuments" name="fileDocuments" accept="image/*" required onchange="handleFile(event, 'fileDocuments')">
+                            <div class="file-preview" id="preview-fileDocuments"></div>
+                        </div>
+
+                        <div class="file-upload-card" id="card-fileDDrive" onclick="document.getElementById('fileDDrive').click()">
+                            <div style="font-size: 24px;">💾</div>
+                            <div style="font-weight: 600; color: var(--primary);">D-Drive *</div>
+                            <input type="file" id="fileDDrive" name="fileDDrive" accept="image/*" required onchange="handleFile(event, 'fileDDrive')">
+                            <div class="file-preview" id="preview-fileDDrive"></div>
+                        </div>
+
+                        <div class="file-upload-card" id="card-fileThisPC" onclick="document.getElementById('fileThisPC').click()">
+                            <div style="font-size: 24px;">💻</div>
+                            <div style="font-weight: 600; color: var(--primary);">This PC *</div>
+                            <input type="file" id="fileThisPC" name="fileThisPC" accept="image/*" required onchange="handleFile(event, 'fileThisPC')">
+                            <div class="file-preview" id="preview-fileThisPC"></div>
+                        </div>
+                    </div>
+
+                    <div class="validation-msg" id="msg-step3">Please upload all 5 required screenshots.</div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-secondary" onclick="prevStep(2)">🡐 Back</button>
+                        <button type="button" class="btn-primary" onclick="validateAndNext(3, 4)">Next Step ➔</button>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step4">
+                    <div class="section-title">📝 HR & Final Declaration</div>
+                    
+                    <label style="font-weight: 600;">1. Have you read all HR & Compliance documents? *</label>
+                    <div class="yes-no-group">
+                        <label class="radio-item"><input type="radio" name="readHRDocs" value="yes" required><span>Yes</span></label>
+                        <label class="radio-item"><input type="radio" name="readHRDocs" value="no" required><span>No</span></label>
+                    </div>
+
+                    <label style="font-weight: 600;">2. Document Verification *</label>
+                    <div class="yes-no-group" style="grid-template-columns: 1fr;">
+                        <label class="radio-item"><input type="radio" name="readCarefully" value="yes" required><span>Yes, I have read all documents carefully</span></label>
+                        <label class="radio-item"><input type="radio" name="readCarefully" value="no" required><span>No, I need more time</span></label>
+                    </div>
+
+                    <div style="background: #f0fdf4; border-left: 4px solid var(--success); padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; line-height: 1.5;">
+                        "I hereby declare that all information provided by me is absolutely true and accurate. If found false, I take full responsibility as per company policy."
+                    </div>
+
+                    <label style="display: flex; gap: 10px; cursor: pointer; margin-bottom: 20px; align-items: flex-start;">
+                        <input type="checkbox" id="agreeDeclaration" name="agreeDeclaration" required style="width: 20px; height: 20px; margin-top: 2px;">
+                        <span style="font-weight: 600; font-size: 14px;">I confirm and agree with the above declaration. *</span>
+                    </label>
+
+                    <label style="font-weight: 600;">Signature Date *</label>
+                    <input type="date" id="signatureDate" name="signatureDate" required>
+
+                    <div class="validation-msg" id="msg-step4">Please complete all fields and agree to the declaration.</div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-secondary" onclick="prevStep(3)">🡐 Back</button>
+                        <button type="submit" class="btn-primary" id="submitBtn" style="background: var(--success);">Submit Form 🚀</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ⚠️ PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE:
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_URL_HERE/exec'; 
+        let currentEmployee = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('signatureDate').valueAsDate = new Date();
+            document.getElementById('complianceForm').addEventListener('submit', handleSubmit);
+            
+            document.querySelectorAll('input').forEach(el => {
+                el.addEventListener('change', function() {
+                    this.classList.remove('error-border');
+                    if(this.type === 'radio' || this.type === 'checkbox') {
+                        this.closest('div').classList.remove('error-border');
+                        Array.from(this.closest('div').children).forEach(child => child.classList.remove('error-border'));
+                    }
+                });
+            });
+        });
+
+        // LOADER UI FUNCTIONS
+        function setLoader(title, subtitle) {
+            document.getElementById('loaderText').textContent = title;
+            document.getElementById('loaderSubText').textContent = subtitle;
+        }
+
+        function showLoader() { document.getElementById('loaderOverlay').classList.add('show'); }
+        function hideLoader() { document.getElementById('loaderOverlay').classList.remove('show'); }
+
+        // WIZARD NAVIGATION LOGIC
+        function updateDots(step) {
+            for(let i=1; i<=4; i++) {
+                const dot = document.getElementById(`dot${i}`);
+                if(i < step) { dot.className = 'step-dot completed'; }
+                else if(i === step) { dot.className = 'step-dot active'; }
+                else { dot.className = 'step-dot'; }
+            }
+            const progress = ((step - 1) / 3) * 100;
+            document.getElementById('stepProgress').style.width = progress + '%';
+        }
+
+        function showStep(stepNum) {
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${stepNum}`).classList.add('active');
+            updateDots(stepNum);
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function prevStep(stepNum) { showStep(stepNum); }
+
+        // STEP 1 VALIDATION & API CALL 
+        async function verifyAndNext() {
+            const empId = document.getElementById('empId');
+            const email = document.getElementById('email');
+            const msg = document.getElementById('msg-step1');
+
+            empId.classList.remove('error-border');
+            email.classList.remove('error-border');
+            msg.style.display = 'none';
+
+            if (!empId.value.trim() || !email.value.trim()) {
+                if(!empId.value) empId.classList.add('error-border');
+                if(!email.value) email.classList.add('error-border');
+                msg.style.display = 'block'; return;
+            }
+
+            setLoader("Searching your data...", "Connecting to secure database");
+            showLoader();
+            await new Promise(r => setTimeout(r, 800));
+            setLoader("Verifying credentials...", "Checking Employee ID and Email");
+
+            try {
+                const payload = { action: 'verifyEmployee', empId: empId.value, email: email.value };
+                const res = await fetch(GOOGLE_APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const data = await res.json();
+
+                if (data.success) {
+                    currentEmployee = data.member;
+                    document.getElementById('empNameDisplay').textContent = currentEmployee.name;
+                    document.getElementById('empDeptDisplay').textContent = currentEmployee.department;
+                    document.getElementById('empInfoBox').style.display = 'block';
+                    empId.readOnly = true; email.readOnly = true;
+                    
+                    hideLoader();
+                    setTimeout(() => { showStep(2); }, 300);
+                } else {
+                    hideLoader();
+                    msg.textContent = '❌ ' + data.message;
+                    msg.style.display = 'block';
+                }
+            } catch (err) {
+                hideLoader();
+                msg.textContent = 'Connection error. Please try again.';
+                msg.style.display = 'block';
+            }
+        }
+
+        function validateAndNext(currentStepNum, nextStepNum) {
+            const stepEl = document.getElementById(`step${currentStepNum}`);
+            const requiredInputs = Array.from(stepEl.querySelectorAll('[required]'));
+            const msg = document.getElementById(`msg-step${currentStepNum}`);
+            let isValid = true;
+
+            requiredInputs.forEach(input => {
+                if (input.type === 'radio') {
+                    const groupName = input.name;
+                    const isChecked = stepEl.querySelector(`input[name="${groupName}"]:checked`);
+                    if (!isChecked) {
+                        isValid = false;
+                        document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => r.closest('.radio-item').classList.add('error-border'));
+                    }
+                } else if (input.type === 'file') {
+                    if (input.files.length === 0) {
+                        isValid = false;
+                        document.getElementById(`card-${input.id}`).classList.add('error-border');
+                    }
+                } else if (input.type === 'checkbox') {
+                    if (!input.checked) {
+                        isValid = false;
+                        input.closest('label').style.color = 'var(--accent)';
+                    } else {
+                        input.closest('label').style.color = 'inherit';
+                    }
+                } else {
+                    if (input.value.trim() === '') {
+                        isValid = false;
+                        input.classList.add('error-border');
+                    }
+                }
+            });
+
+            if (isValid) { msg.style.display = 'none'; showStep(nextStepNum); } 
+            else { msg.style.display = 'block'; }
+        }
+
+        function handleFile(e, fieldId) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('preview-' + fieldId);
+            const card = document.getElementById('card-' + fieldId);
+            card.classList.remove('error-border');
+
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    preview.innerHTML = '<span style="color:var(--accent)">File too large (Max 5MB)</span>';
+                    e.target.value = '';
+                } else {
+                    preview.innerHTML = '✓ ' + file.name;
+                }
+            }
+        }
+
+        const getBase64 = (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        // FINAL SUBMIT
+        async function handleSubmit(e) {
+            e.preventDefault();
+            validateAndNext(4, 4); 
+            if(document.getElementById('msg-step4').style.display === 'block') return;
+            if (!currentEmployee) return;
+
+            setLoader("Preparing data...", "Gathering your form inputs");
+            showLoader();
+
+            try {
+                const payload = {
+                    action: 'submitForm', empId: currentEmployee.id, empName: currentEmployee.name,
+                    email: currentEmployee.email, department: currentEmployee.department
+                };
+
+                const form = document.getElementById('complianceForm');
+                const formData = new FormData(form);
+                for (let [key, value] of formData.entries()) {
+                    if (!key.startsWith('file')) payload[key] = value;
+                }
+
+                setLoader("Processing files...", "Converting images to secure format");
+                await new Promise(r => setTimeout(r, 800)); 
+
+                const fileFields = ['fileDesktop', 'fileDownloads', 'fileDocuments', 'fileDDrive', 'fileThisPC'];
+                for (let fieldId of fileFields) {
+                    const fileInput = document.getElementById(fieldId);
+                    if (fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        const base64String = await getBase64(file);
+                        payload[fieldId] = {
+                            name: file.name, type: file.type, data: base64String.split(',')[1]
+                        };
+                    }
+                }
+
+                setLoader("Uploading to Google Drive...", "This might take a few seconds");
+
+                const res = await fetch(GOOGLE_APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const data = await res.json();
+
+                if (data.success) {
+                    document.getElementById('loaderSpinner').style.display = 'none';
+                    setLoader("✅ Successfully Submitted!", "Redirecting to home...");
+                    setTimeout(() => location.reload(), 3000);
+                } else {
+                    hideLoader();
+                    showMessage('❌ Error: ' + data.message, 'error');
+                }
+            } catch (err) {
+                hideLoader();
+                showMessage('❌ Network Error while submitting.', 'error');
+            }
+        }
+
+        function showMessage(msg, type) {
+            const container = document.getElementById('messageContainer');
+            container.innerHTML = `<div class="message ${type} show">${msg}</div>`;
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    </script>
+</body>
+</html>
