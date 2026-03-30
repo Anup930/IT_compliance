@@ -4,148 +4,893 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GRETEX IT & HR Compliance Form v4.2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
-            --primary: #1e40af;
-            --secondary: #0d9488;
-            --accent: #e11d48;
+            --primary: #0055cc;
+            --primary-dark: #003399;
+            --secondary: #00a86b;
+            --accent: #ff6b6b;
             --success: #10b981;
             --light: #f8fafc;
-            --border: #cbd5e1;
+            --border: #e2e8f0;
             --text-dark: #0f172a;
             --text-light: #64748b;
-            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+            --shadow-lg: 0 16px 40px rgba(0,0,0,0.15);
         }
+        
+        html { scroll-behavior: smooth; }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e0e7ff 0%, #ccfbf1 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f9ff 0%, #f0fdf4 50%, #fef3f2 100%);
             color: var(--text-dark);
             padding: 40px 20px;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 85, 204, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0, 168, 107, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 20px;
-            box-shadow: var(--shadow-md);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 50px 30px 40px;
+            text-align: center;
+            position: relative;
             overflow: hidden;
         }
-        .header {
-            background: linear-gradient(135deg, var(--primary) 0%, #312e81 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
         }
-        .header h1 { font-size: 28px; margin-bottom: 10px; font-weight: 700; }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite reverse;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(20px); }
+        }
+        
+        .header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInDown 0.6s ease-out;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .step-indicator {
-            display: flex; justify-content: space-between; max-width: 500px; margin: 25px auto 0; position: relative;
+            display: flex;
+            justify-content: space-between;
+            max-width: 500px;
+            margin: 30px auto 0;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 0.8s ease-out 0.2s both;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
         .step-indicator::before {
-            content: ''; position: absolute; top: 15px; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.2); z-index: 1;
+            content: '';
+            position: absolute;
+            top: 17px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255,255,255,0.15);
+            z-index: 1;
         }
+        
         .step-indicator-fill {
-            position: absolute; top: 15px; left: 0; height: 3px; background: #34d399; z-index: 1; transition: 0.4s ease;
+            position: absolute;
+            top: 17px;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #34d399 0%, #10b981 100%);
+            z-index: 1;
+            transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.4);
         }
+        
         .step-dot {
-            width: 34px; height: 34px; background: #312e81; border: 3px solid rgba(255,255,255,0.5);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; z-index: 2; position: relative; font-size: 12px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            z-index: 2;
+            position: relative;
+            font-size: 13px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
         }
-        .step-dot.active { background: #34d399; border-color: white; color: #0f172a;}
-        .step-dot.completed { background: #10b981; border-color: white; }
-        .form-wrapper { padding: 40px; }
-        .step-content { display: none; animation: fadeIn 0.4s ease; }
-        .step-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .section-title { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;}
+        
+        .step-dot:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.2);
+        }
+        
+        .step-dot.active {
+            background: white;
+            border-color: white;
+            color: var(--primary);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transform: scale(1.15);
+        }
+        
+        .step-dot.completed {
+            background: #34d399;
+            border-color: white;
+            color: white;
+            animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .form-wrapper {
+            padding: 45px;
+            animation: fadeIn 0.6s ease-out 0.3s both;
+        }
+        
+        .step-content {
+            display: none;
+            animation: contentFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .step-content.active {
+            display: block;
+            animation: contentFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes contentFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 15px;
+            letter-spacing: -0.3px;
+            animation: titleSlide 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes titleSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
         input[type="text"], input[type="email"], input[type="date"] {
-            width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px; margin-bottom: 15px;
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            margin-bottom: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
         }
-        input:focus { border-color: var(--primary); outline: none; }
-        .yes-no-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0 20px 0;}
+        
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 85, 204, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        input:hover {
+            border-color: var(--primary);
+        }
+        
+        .yes-no-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0 25px 0;
+            animation: slideInUp 0.5s ease-out 0.1s both;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .radio-item {
-            display: flex; align-items: center; gap: 10px; padding: 12px 15px;
-            border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: white;
+            position: relative;
+            overflow: hidden;
         }
-        .radio-item:hover { background: #f8fafc; }
-        .radio-item input[type="radio"]:checked + span { color: var(--primary); font-weight: 700; }
+        
+        .radio-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 85, 204, 0.05), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .radio-item:hover {
+            border-color: var(--primary);
+            background: #f8fbff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .radio-item:hover::before {
+            left: 100%;
+        }
+        
+        .radio-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+        
+        .radio-item input[type="radio"]:checked + span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
         .assigned-assets-container {
-            background: #f0fdf4; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid var(--success);
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--success);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+            animation: slideInUp 0.5s ease-out;
         }
+        
         .assigned-assets-title {
-            font-weight: 600; color: var(--success); margin-bottom: 15px; font-size: 16px;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 15px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+        
         .assigned-asset-chip {
-            display: inline-block; background: var(--success); color: white; padding: 8px 15px; 
-            border-radius: 20px; margin-right: 10px; margin-bottom: 10px; font-size: 13px; font-weight: 600;
+            display: inline-block;
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 24px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.3s ease;
         }
-        .file-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px;}
+        
+        .assigned-asset-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+        
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+        
         .file-upload-card {
-            border: 2px dashed #94a3b8; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: white;
+            border: 2px dashed var(--border);
+            border-radius: 14px;
+            padding: 24px 16px;
+            text-align: center;
+            cursor: pointer;
+            background: linear-gradient(135deg, white 0%, #f8fbff 100%);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
         }
-        .file-upload-card:hover { border-color: var(--primary); background: #eff6ff; }
-        .file-upload-card input[type="file"] { display: none; }
-        .file-preview { margin-top: 10px; font-size: 12px; color: var(--success); font-weight: 600; }
-        .file-icon { font-size: 28px; margin-bottom: 8px; }
+        
+        .file-upload-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 85, 204, 0.05) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .file-upload-card:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #f8fbff 0%, #f0f9ff 100%);
+            box-shadow: 0 8px 20px rgba(0, 85, 204, 0.12);
+            transform: translateY(-4px);
+        }
+        
+        .file-upload-card:hover::before {
+            opacity: 1;
+        }
+        
+        .file-upload-card input[type="file"] {
+            display: none;
+        }
+        
+        .file-preview {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 600;
+            word-break: break-all;
+            animation: slideInUp 0.3s ease-out;
+        }
+        
+        .file-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .file-upload-card:hover .file-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+        
         .asset-section {
-            background: #f8fafc; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid var(--secondary);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f9ff 100%);
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 28px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 85, 204, 0.08);
+            animation: slideInUp 0.5s ease-out;
+            transition: all 0.3s ease;
         }
-        .asset-section-title { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        .asset-badge { background: var(--primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; border-top: 2px solid #f1f5f9; padding-top: 20px;}
-        button { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: #1e3a8a; }
-        .btn-secondary { background: #e2e8f0; color: var(--text-dark); }
-        .btn-secondary:hover { background: #cbd5e1; }
-        .message { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; font-weight: 500;}
-        .message.show { display: block; }
-        .message.success { background: #dcfce7; color: #166534; }
-        .message.error { background: #fee2e2; color: #991b1b; }
-        .validation-msg { color: var(--accent); font-size: 13px; display: none; margin: -10px 0 15px 0;}
+        
+        .asset-section:hover {
+            box-shadow: 0 8px 20px rgba(0, 85, 204, 0.12);
+        }
+        
+        .asset-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .asset-badge {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            min-width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 85, 204, 0.3);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            border-top: 2px solid var(--border);
+            padding-top: 25px;
+            gap: 15px;
+            animation: slideInUp 0.5s ease-out;
+        }
+        
+        button {
+            padding: 13px 28px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 85, 204, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            color: var(--text-dark);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #cbd5e1 0%, #b0bcc4 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .message {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+            border-left: 4px solid;
+            animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.show {
+            display: block;
+        }
+        
+        .message.success {
+            background: linear-gradient(135deg, #dcfce7 0%, #ecfdf5 100%);
+            color: #166534;
+            border-color: #10b981;
+        }
+        
+        .message.error {
+            background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+            color: #991b1b;
+            border-color: #ef4444;
+        }
+        
+        .validation-msg {
+            color: var(--accent);
+            font-size: 13px;
+            display: none;
+            margin: -10px 0 15px 0;
+            animation: shake 0.4s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
         .loader-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.7); display: flex; align-items: center; justify-content: center;
-            z-index: 9999; opacity: 0; visibility: hidden; transition: 0.3s;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(3px);
         }
-        .loader-overlay.show { opacity: 1; visibility: visible; }
+        
+        .loader-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
         .loader-box {
-            background: white; padding: 30px 40px; border-radius: 16px;
-            text-align: center; max-width: 350px; width: 90%;
+            background: white;
+            padding: 40px 50px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        
         .spinner {
-            width: 50px; height: 50px; border: 5px solid #f1f5f9;
-            border-top: 5px solid var(--primary); border-radius: 50%;
-            animation: spin 1s linear infinite; margin: 0 auto 20px;
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f1f5f9;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 20px rgba(0, 85, 204, 0.2);
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loader-text { font-weight: 600; color: var(--text-dark); font-size: 16px; margin-bottom: 5px;}
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loader-text {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-family: 'Outfit', sans-serif;
+        }
+        
         .policy-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
             z-index: 10000;
+            padding: 20px;
+            backdrop-filter: blur(4px);
         }
-        .policy-modal.show { display: flex; }
+        
+        .policy-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
         .policy-modal-content {
-            background: white; border-radius: 16px; max-width: 600px; width: 90%;
-            max-height: 80vh; overflow-y: auto;
+            background: white;
+            border-radius: 20px;
+            max-width: 650px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        
         .policy-header {
-            background: linear-gradient(135deg, var(--primary) 0%, #312e81 100%);
-            color: white; padding: 25px; text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 28px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-radius: 20px 20px 0 0;
         }
-        .policy-body { padding: 30px; line-height: 1.7; }
+        
+        .policy-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .policy-body {
+            padding: 30px;
+            line-height: 1.8;
+            overflow-y: auto;
+            color: var(--text-dark);
+        }
+        
+        .policy-body ul {
+            margin-left: 20px;
+            margin-bottom: 18px;
+        }
+        
+        .policy-body li {
+            margin-bottom: 10px;
+        }
+        
+        .policy-body h3 {
+            margin-top: 22px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: var(--primary);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+        
+        .policy-body p {
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+        
         .policy-footer {
-            padding: 20px 30px; border-top: 2px solid #f1f5f9; display: flex; justify-content: center; gap: 10px;
+            padding: 20px 30px;
+            border-top: 2px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #f8fafc;
+            position: sticky;
+            bottom: 0;
         }
+        
+        .policy-footer button {
+            padding: 11px 24px;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            body { padding: 15px 10px; }
-            .header { padding: 30px 20px; }
-            .yes-no-group { grid-template-columns: 1fr; }
-            .nav-buttons { flex-direction: column-reverse; gap: 12px; }
-            .nav-buttons button { width: 100%; }
+            body {
+                padding: 15px 10px;
+            }
+            
+            .header {
+                padding: 35px 20px 30px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .form-wrapper {
+                padding: 25px 20px;
+            }
+            
+            .yes-no-group {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .nav-buttons {
+                flex-direction: column-reverse;
+                gap: 10px;
+            }
+            
+            .nav-buttons button {
+                width: 100%;
+            }
+            
+            .step-indicator {
+                max-width: 100%;
+            }
+            
+            .asset-section {
+                padding: 20px;
+            }
+            
+            .file-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .policy-footer {
+                justify-content: center;
+                flex-direction: column-reverse;
+            }
+            
+            .policy-footer button {
+                width: 100%;
+            }
+            
+            .section-title {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .step-dot {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+            
+            .step-indicator::before, .step-indicator-fill {
+                top: 14px;
+            }
+            
+            .form-wrapper {
+                padding: 20px 15px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            input[type="text"], input[type="email"], input[type="date"] {
+                font-size: 16px;
+                padding: 12px 14px;
+            }
+            
+            #otpInput {
+                font-size: 24px;
+                letter-spacing: 8px;
+            }
+            
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .policy-header h2 {
+                font-size: 18px;
+            }
+            
+            .policy-body {
+                padding: 20px;
+                font-size: 14px;
+            }
+            
+            .assigned-asset-chip {
+                margin-right: 5px;
+                margin-bottom: 8px;
+            }
         }
     </style>
 </head>
@@ -158,7 +903,6 @@
         </div>
     </div>
 
-    <!-- POLICY MODALS -->
     <div class="policy-modal" id="policyModal1">
         <div class="policy-modal-content">
             <div class="policy-header"><h2>📋 IT Compliance Policy</h2></div>
@@ -484,19 +1228,18 @@
 
             <form id="complianceForm">
                 
-                <!-- STEP 1 -->
                 <div class="step-content active" id="step1">
                     <div class="section-title">🔐 Identity Verification</div>
-                    <p style="color: var(--text-light); margin-bottom: 15px;">Enter your credentials to verify your identity.</p>
+                    <p style="color: var(--text-light); margin-bottom: 20px; font-size: 15px;">Enter your credentials to verify your identity.</p>
                     
-                    <label style="font-weight: 600;">Employee ID *</label>
+                    <label style="font-weight: 600; margin-bottom: 12px;">Employee ID *</label>
                     <input type="text" id="empId" placeholder="e.g. EMP001" required>
                     
-                    <label style="font-weight: 600;">Email Address *</label>
+                    <label style="font-weight: 600; margin-bottom: 12px;">Email Address *</label>
                     <input type="email" id="email" placeholder="your.email@company.com" required>
 
-                    <div id="empInfoBox" style="display:none; background: #eff6ff; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #bfdbfe;">
-                        <strong style="color:var(--primary)">Welcome, <span id="empNameDisplay"></span></strong> (<span id="empDeptDisplay"></span>)
+                    <div id="empInfoBox" style="display:none; background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%); padding: 18px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary); box-shadow: 0 4px 12px rgba(0, 85, 204, 0.1);">
+                        <strong style="color:var(--primary)">✓ Welcome, <span id="empNameDisplay"></span></strong> (<span id="empDeptDisplay"></span>)
                     </div>
 
                     <div class="validation-msg" id="msg-step1">Please enter both ID and Email.</div>
@@ -506,30 +1249,29 @@
                     </div>
                 </div>
 
-                <!-- STEP 1A: OTP VERIFICATION (NEW!) -->
                 <div class="step-content" id="step1a">
                     <div class="section-title">📧 Verify Your Email</div>
-                    <p style="color: var(--text-light); margin-bottom: 20px;">We've sent a One-Time Password (OTP) to your email address. Enter it below to verify.</p>
+                    <p style="color: var(--text-light); margin-bottom: 25px; font-size: 15px;">We've sent a One-Time Password (OTP) to your email address. Enter it below to verify.</p>
                     
-                    <div style="background: #eff6ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary);">
-                        <strong style="color: var(--primary);">OTP sent to:</strong>
-                        <div id="otpEmailDisplay" style="font-size: 14px; color: var(--text-dark); margin-top: 5px; font-weight: 600;"></div>
-                        <div style="font-size: 12px; color: var(--text-light); margin-top: 8px;">⏱️ OTP expires in 10 minutes</div>
+                    <div style="background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%); padding: 18px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid var(--primary); box-shadow: 0 4px 12px rgba(0, 85, 204, 0.1);">
+                        <strong style="color: var(--primary);">✉️ OTP sent to:</strong>
+                        <div id="otpEmailDisplay" style="font-size: 15px; color: var(--text-dark); margin-top: 8px; font-weight: 600;"></div>
+                        <div style="font-size: 13px; color: var(--text-light); margin-top: 10px;">⏱️ OTP expires in 10 minutes</div>
                     </div>
 
-                    <label style="font-weight: 600;">Enter 6-Digit OTP *</label>
-                    <input type="text" id="otpInput" placeholder="000000" maxlength="6" style="font-size: 24px; letter-spacing: 10px; text-align: center; font-weight: bold; margin-bottom: 15px;" required>
+                    <label style="font-weight: 600; margin-bottom: 12px;">Enter 6-Digit OTP *</label>
+                    <input type="text" id="otpInput" placeholder="000000" maxlength="6" style="font-size: 26px; letter-spacing: 12px; text-align: center; font-weight: bold; margin-bottom: 20px; font-family: 'Courier New', monospace;" required>
                     
                     <div class="validation-msg" id="msg-otp">Invalid OTP or expired. Please try again.</div>
 
-                    <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--success); font-size: 14px;">
+                    <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-left: 4px solid var(--success); padding: 16px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);">
                         <strong>✓ Check your email inbox</strong><br>
                         Look for email with subject: "Your Compliance Form OTP"<br>
-                        <span style="font-size: 12px; color: var(--text-light);">If not found, check spam/junk folder</span>
+                        <span style="font-size: 13px; color: var(--text-light);">If not found, check spam/junk folder</span>
                     </div>
 
-                    <div id="otpAttempts" style="color: var(--text-light); font-size: 13px; margin-bottom: 20px; text-align: center;">
-                        Attempts remaining: <span id="attemptsCount" style="font-weight: 600; color: var(--accent);">3</span>
+                    <div id="otpAttempts" style="color: var(--text-light); font-size: 14px; margin-bottom: 25px; text-align: center; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                        Attempts remaining: <span id="attemptsCount" style="font-weight: 600; color: var(--primary);">3</span>
                     </div>
 
                     <div class="nav-buttons">
@@ -537,16 +1279,17 @@
                         <button type="button" class="btn-primary" onclick="verifyOTP()">Verify OTP ✓</button>
                     </div>
 
-                    <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
-                        <button type="button" style="background: none; border: none; color: var(--primary); cursor: pointer; font-weight: 600; text-decoration: underline; font-size: 14px;" onclick="resendOTP()">
-                            Didn't receive OTP? Resend
+                    <div style="text-align: center; margin-top: 25px; padding-top: 25px; border-top: 2px solid var(--border);">
+                        <button type="button" style="background: none; border: none; color: var(--primary); cursor: pointer; font-weight: 600; text-decoration: none; font-size: 14px; padding: 0; transition: all 0.3s ease;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" onclick="resendOTP()">
+                            🔄 Didn't receive OTP? Resend
                         </button>
                     </div>
                 </div>
+
                 <div class="step-content" id="step2">
                     <div class="section-title">💻 IT Compliance</div>
                     
-                    <label style="font-weight: 600;">1. Have you read the IT Compliance policy? *</label>
+                    <label style="font-weight: 600; margin-bottom: 12px;">1. Have you read the IT Compliance policy? *</label>
                     <div class="yes-no-group">
                         <label class="radio-item">
                             <input type="radio" name="readCompliance" value="yes" onchange="openPolicy('policyModal1')">
@@ -558,7 +1301,7 @@
                         </label>
                     </div>
 
-                    <label style="font-weight: 600;">2. Are you aware of IT Compliance requirements? *</label>
+                    <label style="font-weight: 600; margin-bottom: 12px;">2. Are you aware of IT Compliance requirements? *</label>
                     <div class="yes-no-group">
                         <label class="radio-item">
                             <input type="radio" name="awareCompliance" value="yes" onchange="openPolicy('policyModal2')">
@@ -570,7 +1313,7 @@
                         </label>
                     </div>
 
-                    <label style="font-weight: 600;">3. Have you read all IT Compliance documents? *</label>
+                    <label style="font-weight: 600; margin-bottom: 12px;">3. Have you read all IT Compliance documents? *</label>
                     <div class="yes-no-group">
                         <label class="radio-item">
                             <input type="radio" name="readAllDocs" value="yes" onchange="openPolicy('policyModal3')">
@@ -590,10 +1333,9 @@
                     </div>
                 </div>
 
-                <!-- STEP 3 -->
                 <div class="step-content" id="step3">
                     <div class="section-title">🖥️ Your Assigned Assets</div>
-                    <p style="color: var(--text-light); margin-bottom: 20px;">Upload screenshots for each assigned asset/server.</p>
+                    <p style="color: var(--text-light); margin-bottom: 25px; font-size: 15px;">Upload screenshots for each assigned asset/server.</p>
                     
                     <div class="assigned-assets-container">
                         <div class="assigned-assets-title">✓ Your Assets & Servers:</div>
@@ -610,11 +1352,10 @@
                     </div>
                 </div>
 
-                <!-- STEP 4 -->
                 <div class="step-content" id="step4">
                     <div class="section-title">📝 HR & Final Declaration</div>
                     
-                    <label style="font-weight: 600;">1. Have you read all HR & Compliance documents? *</label>
+                    <label style="font-weight: 600; margin-bottom: 12px;">1. Have you read all HR & Compliance documents? *</label>
                     <div class="yes-no-group">
                         <label class="radio-item">
                             <input type="radio" name="readHRDocs" value="yes" onchange="openPolicy('policyModal4')">
@@ -626,28 +1367,28 @@
                         </label>
                     </div>
 
-                    <label style="font-weight: 600;">2. Document Verification *</label>
+                    <label style="font-weight: 600; margin-bottom: 12px;">2. Document Verification *</label>
                     <div class="yes-no-group" style="grid-template-columns: 1fr;">
                         <label class="radio-item"><input type="radio" name="readCarefully" value="yes" required><span>Yes, I have read all documents</span></label>
                     </div>
 
-                    <div style="background: #f0fdf4; border-left: 4px solid var(--success); padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 14px;">
-                        "I hereby declare that all information provided is absolutely true and accurate."
+                    <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-left: 4px solid var(--success); padding: 18px; border-radius: 12px; margin: 20px 0; font-size: 14px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);">
+                        <strong>"I hereby declare that all information provided is absolutely true and accurate."</strong>
                     </div>
 
-                    <label style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <input type="checkbox" id="agreeDeclaration" required>
+                    <label style="display: flex; gap: 12px; margin-bottom: 25px; padding: 12px; background: #f8fafc; border-radius: 10px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='#f8fafc'">
+                        <input type="checkbox" id="agreeDeclaration" required style="width: 20px; cursor: pointer;">
                         <span style="font-weight: 600;">I confirm and agree with the above declaration. *</span>
                     </label>
 
-                    <label style="font-weight: 600;">Signature Date *</label>
+                    <label style="font-weight: 600; margin-bottom: 12px;">Signature Date *</label>
                     <input type="date" id="signatureDate" required>
 
                     <div class="validation-msg" id="msg-step4">Please complete all fields.</div>
 
                     <div class="nav-buttons">
                         <button type="button" class="btn-secondary" onclick="prevStep(3)">🡐 Back</button>
-                        <button type="submit" class="btn-primary" style="background: var(--success);">Submit Form 🚀</button>
+                        <button type="submit" class="btn-primary" style="background: linear-gradient(135deg, var(--success) 0%, #059669 100%); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);">Submit Form 🚀</button>
                     </div>
                 </div>
 
@@ -691,7 +1432,6 @@
             document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
             document.getElementById(stepId).classList.add('active');
             
-            // Update dots based on step
             if(stepId === 'step1') updateDots(1);
             else if(stepId === 'step1a') updateDots(2);
             else if(stepId === 'step2') updateDots(3);
@@ -701,7 +1441,11 @@
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        // STEP 1: Verify and Send OTP
+        function prevStep(stepNum) {
+            const stepMap = {1: 'step1', 2: 'step2', 3: 'step3'};
+            showStep(stepMap[stepNum]);
+        }
+
         async function verifyAndSendOTP() {
             const empId = document.getElementById('empId');
             const email = document.getElementById('email');
@@ -737,7 +1481,6 @@
                     setLoader("Sending OTP to your email...");
                     await new Promise(r => setTimeout(r, 800));
 
-                    // Fetch assets while waiting
                     const assetRes = await fetch(GAS_URL, {
                         method: 'POST',
                         body: JSON.stringify({
@@ -748,7 +1491,6 @@
                     const assetData = await assetRes.json();
                     assignedAssets = assetData.assets || [];
 
-                    // Generate and send OTP
                     await sendOTPEmail(email.value, currentEmployee.name);
                     
                     hideLoader();
@@ -765,7 +1507,6 @@
             }
         }
 
-        // Generate and send OTP
         async function sendOTPEmail(email, name) {
             generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
             otpAttempts = 3;
@@ -785,7 +1526,6 @@
             }
         }
 
-        // Show OTP verification step
         function showOTPStep(email) {
             document.getElementById('otpEmailDisplay').textContent = email;
             document.getElementById('attemptsCount').textContent = otpAttempts;
@@ -794,7 +1534,6 @@
             showStep('step1a');
         }
 
-        // Verify OTP
         function verifyOTP() {
             const inputOTP = document.getElementById('otpInput').value.trim();
             const msg = document.getElementById('msg-otp');
@@ -828,7 +1567,6 @@
             }
         }
 
-        // Resend OTP
         async function resendOTP() {
             const email = document.getElementById('email').value;
             setLoader("Sending OTP again...");
@@ -842,7 +1580,6 @@
             alert('OTP sent to your email!');
         }
 
-        // Back to Step 1
         function backToStep1() {
             document.getElementById('empId').readOnly = false;
             document.getElementById('email').readOnly = false;
@@ -861,7 +1598,6 @@
                 return;
             }
 
-            // Show chips
             assignedAssets.forEach(asset => {
                 const chip = document.createElement('div');
                 chip.className = 'assigned-asset-chip';
@@ -869,7 +1605,6 @@
                 display.appendChild(chip);
             });
 
-            // Generate file sections
             assignedAssets.forEach((asset, idx) => {
                 const section = document.createElement('div');
                 section.className = 'asset-section';
