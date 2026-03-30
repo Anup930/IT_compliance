@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT & HR Compliance Form v3.3 (Responsive)</title>
+    <title>GRETEX IT & HR Compliance Form v4.2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
             --primary: #1e40af;
             --secondary: #0d9488;
@@ -18,7 +17,6 @@
             --text-light: #64748b;
             --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #e0e7ff 0%, #ccfbf1 100%);
@@ -26,27 +24,21 @@
             padding: 40px 20px;
             min-height: 100vh;
         }
-
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.98);
             border-radius: 20px;
             box-shadow: var(--shadow-md);
             overflow: hidden;
-            width: 100%; /* Ensures it doesn't overflow */
         }
-
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, #312e81 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
         }
-
-        .header h1 { font-size: 28px; margin-bottom: 10px; font-weight: 700; line-height: 1.3;}
-        
-        /* Wizard Steps Indicator */
+        .header h1 { font-size: 28px; margin-bottom: 10px; font-weight: 700; }
         .step-indicator {
             display: flex; justify-content: space-between; max-width: 500px; margin: 25px auto 0; position: relative;
         }
@@ -54,112 +46,106 @@
             content: ''; position: absolute; top: 15px; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.2); z-index: 1;
         }
         .step-indicator-fill {
-            position: absolute; top: 15px; left: 0; height: 3px; background: #34d399; z-index: 1; transition: 0.4s ease; width: 0%;
+            position: absolute; top: 15px; left: 0; height: 3px; background: #34d399; z-index: 1; transition: 0.4s ease;
         }
         .step-dot {
             width: 34px; height: 34px; background: #312e81; border: 3px solid rgba(255,255,255,0.5);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; z-index: 2; position: relative; transition: 0.3s;
+            font-weight: bold; z-index: 2; position: relative; font-size: 12px;
         }
         .step-dot.active { background: #34d399; border-color: white; color: #0f172a;}
-        .step-dot.completed { background: #10b981; border-color: white; color: white;}
-
+        .step-dot.completed { background: #10b981; border-color: white; }
         .form-wrapper { padding: 40px; }
-
         .step-content { display: none; animation: fadeIn 0.4s ease; }
         .step-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .section-title { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;}
-        
         input[type="text"], input[type="email"], input[type="date"] {
             width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px; margin-bottom: 15px;
         }
         input:focus { border-color: var(--primary); outline: none; }
-        .error-border { border-color: var(--accent) !important; background: #fff1f2; }
-
-        .yes-no-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; margin-bottom: 20px;}
+        .yes-no-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0 20px 0;}
         .radio-item {
             display: flex; align-items: center; gap: 10px; padding: 12px 15px;
-            border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: 0.2s;
+            border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
         }
-        .radio-item.error-border { border-color: var(--accent); }
         .radio-item:hover { background: #f8fafc; }
         .radio-item input[type="radio"]:checked + span { color: var(--primary); font-weight: 700; }
-
-        .file-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;}
-        .file-upload-card {
-            border: 2px dashed #94a3b8; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: #f8fafc;
+        .assigned-assets-container {
+            background: #f0fdf4; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid var(--success);
         }
-        .file-upload-card.error-border { border-color: var(--accent); background: #fff1f2; }
+        .assigned-assets-title {
+            font-weight: 600; color: var(--success); margin-bottom: 15px; font-size: 16px;
+        }
+        .assigned-asset-chip {
+            display: inline-block; background: var(--success); color: white; padding: 8px 15px; 
+            border-radius: 20px; margin-right: 10px; margin-bottom: 10px; font-size: 13px; font-weight: 600;
+        }
+        .file-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px;}
+        .file-upload-card {
+            border: 2px dashed #94a3b8; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: white;
+        }
+        .file-upload-card:hover { border-color: var(--primary); background: #eff6ff; }
         .file-upload-card input[type="file"] { display: none; }
-        .file-preview { margin-top: 10px; font-size: 12px; color: var(--success); font-weight: 600; word-break: break-all;}
-
+        .file-preview { margin-top: 10px; font-size: 12px; color: var(--success); font-weight: 600; }
+        .file-icon { font-size: 28px; margin-bottom: 8px; }
+        .asset-section {
+            background: #f8fafc; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid var(--secondary);
+        }
+        .asset-section-title { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .asset-badge { background: var(--primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; border-top: 2px solid #f1f5f9; padding-top: 20px;}
-        button { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; transition: 0.3s; }
+        button { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: #1e3a8a; }
         .btn-secondary { background: #e2e8f0; color: var(--text-dark); }
         .btn-secondary:hover { background: #cbd5e1; }
-        
         .message { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; font-weight: 500;}
         .message.show { display: block; }
-        .message.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-        .message.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-        .validation-msg { color: var(--accent); font-size: 13px; display: none; margin-top: -10px; margin-bottom: 15px;}
-
-        /* --- DYNAMIC LOADER CSS --- */
+        .message.success { background: #dcfce7; color: #166534; }
+        .message.error { background: #fee2e2; color: #991b1b; }
+        .validation-msg { color: var(--accent); font-size: 13px; display: none; margin: -10px 0 15px 0;}
         .loader-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(5px);
-            display: flex; align-items: center; justify-content: center;
+            background: rgba(15, 23, 42, 0.7); display: flex; align-items: center; justify-content: center;
             z-index: 9999; opacity: 0; visibility: hidden; transition: 0.3s;
         }
         .loader-overlay.show { opacity: 1; visibility: visible; }
-        
         .loader-box {
             background: white; padding: 30px 40px; border-radius: 16px;
-            text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            max-width: 350px; width: 90%; transform: scale(0.9); transition: 0.3s;
+            text-align: center; max-width: 350px; width: 90%;
         }
-        .loader-overlay.show .loader-box { transform: scale(1); }
-
         .spinner {
             width: 50px; height: 50px; border: 5px solid #f1f5f9;
             border-top: 5px solid var(--primary); border-radius: 50%;
             animation: spin 1s linear infinite; margin: 0 auto 20px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         .loader-text { font-weight: 600; color: var(--text-dark); font-size: 16px; margin-bottom: 5px;}
-        .loader-subtext { font-size: 13px; color: var(--text-light); }
-
-
-        /* =========================================================
-           MOBILE RESPONSIVENESS (MEDIA QUERIES)
-           ========================================================= */
+        .policy-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center;
+            z-index: 10000;
+        }
+        .policy-modal.show { display: flex; }
+        .policy-modal-content {
+            background: white; border-radius: 16px; max-width: 600px; width: 90%;
+            max-height: 80vh; overflow-y: auto;
+        }
+        .policy-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #312e81 100%);
+            color: white; padding: 25px; text-align: center;
+        }
+        .policy-body { padding: 30px; line-height: 1.7; }
+        .policy-footer {
+            padding: 20px 30px; border-top: 2px solid #f1f5f9; display: flex; justify-content: center; gap: 10px;
+        }
         @media (max-width: 768px) {
             body { padding: 15px 10px; }
             .header { padding: 30px 20px; }
-            .header h1 { font-size: 24px; }
-            .form-wrapper { padding: 25px 20px; }
-            
-            /* Stack Yes/No questions on mobile */
-            .yes-no-group { grid-template-columns: 1fr; gap: 10px;}
-            
-            /* Make buttons full width and stack them */
-            .nav-buttons { flex-direction: column-reverse; gap: 12px; align-items: stretch;}
-            .nav-buttons button { width: 100%; padding: 14px; }
-            
-            /* Step indicator adjustments */
-            .step-dot { width: 30px; height: 30px; font-size: 14px; }
-            .step-indicator::before, .step-indicator-fill { top: 13px; }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 { font-size: 20px; }
-            .section-title { font-size: 18px; }
-            .loader-box { padding: 25px 20px; }
+            .yes-no-group { grid-template-columns: 1fr; }
+            .nav-buttons { flex-direction: column-reverse; gap: 12px; }
+            .nav-buttons button { width: 100%; }
         }
     </style>
 </head>
@@ -167,23 +153,329 @@
 
     <div id="loaderOverlay" class="loader-overlay">
         <div class="loader-box">
-            <div class="spinner" id="loaderSpinner"></div>
+            <div class="spinner"></div>
             <div id="loaderText" class="loader-text">Processing...</div>
-            <div id="loaderSubText" class="loader-subtext">Please wait a moment</div>
+        </div>
+    </div>
+
+    <!-- POLICY MODALS -->
+    <div class="policy-modal" id="policyModal1">
+        <div class="policy-modal-content">
+            <div class="policy-header"><h2>📋 IT Compliance Policy</h2></div>
+            <div class="policy-body">
+                <h3>1. Company Information Security Policy</h3>
+                <p>This policy outlines the mandatory guidelines for IT and Information Security across the organization. All employees are required to adhere to these standards to ensure data protection and operational security.</p>
+
+                <h3>2. Data Protection & Confidentiality</h3>
+                <ul>
+                    <li><strong>Confidentiality:</strong> All company data, client information, and proprietary information is strictly confidential. Do not share sensitive information with unauthorized personnel.</li>
+                    <li><strong>Data Access:</strong> Access data only when required for your job duties. Minimize data exposure and secure all documents containing sensitive information.</li>
+                    <li><strong>Data Storage:</strong> Store data in company-designated locations (shared drives, databases). Do NOT store company data on personal devices or unsecured cloud services.</li>
+                    <li><strong>Data Disposal:</strong> Properly dispose of confidential documents by shredding. Delete digital data securely when no longer needed.</li>
+                    <li><strong>Violations:</strong> Data breaches or unauthorized access will result in disciplinary action up to and including termination.</li>
+                </ul>
+
+                <h3>3. Password Security</h3>
+                <ul>
+                    <li><strong>Password Requirements:</strong> Minimum 12 characters with uppercase, lowercase, numbers, and special symbols.</li>
+                    <li><strong>Password Management:</strong> Never share passwords with colleagues. Use a company-approved password manager. Never write passwords on paper.</li>
+                    <li><strong>Password Changes:</strong> Change passwords every 90 days. Do not reuse previous passwords.</li>
+                    <li><strong>Compromised Passwords:</strong> If you believe your password has been compromised, change it immediately and report to IT department.</li>
+                </ul>
+
+                <h3>4. Device & Network Security</h3>
+                <ul>
+                    <li><strong>Company Devices:</strong> Company devices (laptops, desktops, phones) are for official use only. Personal use is strictly prohibited.</li>
+                    <li><strong>Software Updates:</strong> Keep all devices updated with latest security patches and antivirus software.</li>
+                    <li><strong>Remote Access:</strong> Always use company VPN when accessing company resources from outside the office.</li>
+                    <li><strong>Physical Security:</strong> Lock your device when away from your desk. Never leave devices unattended.</li>
+                    <li><strong>Phishing & Malware:</strong> Do not click suspicious links or download unknown attachments. Report suspicious emails to IT immediately.</li>
+                </ul>
+
+                <h3>5. USB Drives & External Devices</h3>
+                <ul>
+                    <li>Only use company-approved USB drives and external devices.</li>
+                    <li>Encrypt all external devices containing company data.</li>
+                    <li>Report lost or stolen devices immediately to IT and security.</li>
+                </ul>
+
+                <h3>6. Internet & Email Usage</h3>
+                <ul>
+                    <li>Use company email only for business purposes.</li>
+                    <li>Do not access inappropriate websites from company network.</li>
+                    <li>Be aware that company monitors internet and email usage for compliance.</li>
+                </ul>
+
+                <p style="margin-top: 20px; font-weight: 600; color: #e11d48;">Non-compliance with this policy will result in disciplinary action.</p>
+            </div>
+            <div class="policy-footer">
+                <button class="btn-secondary" onclick="closeModal('policyModal1')">Cancel</button>
+                <button class="btn-primary" onclick="confirmPolicy('policyModal1')">✓ I Agree</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="policy-modal" id="policyModal2">
+        <div class="policy-modal-content">
+            <div class="policy-header"><h2>🔒 IT Compliance Requirements</h2></div>
+            <div class="policy-body">
+                <h3>Mandatory Security Requirements for All Employees</h3>
+
+                <h3>1. Security Awareness Training</h3>
+                <ul>
+                    <li>Complete annual IT Security Awareness training within 30 days of joining.</li>
+                    <li>Attend quarterly security updates and training sessions.</li>
+                    <li>Stay informed about latest security threats and best practices.</li>
+                    <li>Training completion is mandatory for all employees.</li>
+                </ul>
+
+                <h3>2. Two-Factor Authentication (2FA)</h3>
+                <ul>
+                    <li>Enable 2FA on all company accounts (email, VPN, cloud services).</li>
+                    <li>Use authenticator apps (Google Authenticator, Microsoft Authenticator) or hardware tokens.</li>
+                    <li>Do not use SMS for 2FA when possible (less secure).</li>
+                    <li>Backup authentication codes must be stored securely.</li>
+                    <li>2FA is mandatory - no exceptions.</li>
+                </ul>
+
+                <h3>3. Password Management</h3>
+                <ul>
+                    <li>Change password every 90 days minimum.</li>
+                    <li>Maintain 12+ character passwords with complexity.</li>
+                    <li>Never reuse old passwords.</li>
+                    <li>Password expiry notifications will be sent - do not ignore.</li>
+                </ul>
+
+                <h3>4. Security Incident Reporting</h3>
+                <ul>
+                    <li>Report any security incidents within 24 hours to IT department.</li>
+                    <li>Include: what happened, when, which devices/data affected, potential impact.</li>
+                    <li>Do NOT attempt to fix security issues yourself.</li>
+                    <li>Report suspicious activities, not just confirmed incidents.</li>
+                    <li>Early reporting helps prevent larger breaches.</li>
+                </ul>
+
+                <h3>5. Device Security Compliance</h3>
+                <ul>
+                    <li>Enable device encryption (BitLocker for Windows, FileVault for Mac).</li>
+                    <li>Install and maintain active antivirus software.</li>
+                    <li>Enable firewall on all devices.</li>
+                    <li>Keep OS and applications updated within 30 days of release.</li>
+                    <li>Run monthly security scans.</li>
+                </ul>
+
+                <h3>6. Monthly Compliance Checks</h3>
+                <ul>
+                    <li>IT performs monthly compliance audits on all devices.</li>
+                    <li>Devices must meet security standards to remain connected to company network.</li>
+                    <li>Non-compliant devices will be disconnected until remediated.</li>
+                    <li>You will receive automated notifications of any non-compliance.</li>
+                </ul>
+
+                <h3>7. Mobile Device Security</h3>
+                <ul>
+                    <li>Enable PIN/biometric lock on all mobile devices.</li>
+                    <li>Install company mobile device management (MDM) software.</li>
+                    <li>Do not jailbreak or root devices.</li>
+                    <li>Keep OS and apps updated.</li>
+                </ul>
+
+                <h3>8. Compliance Violations</h3>
+                <ul>
+                    <li>First violation: Written warning + mandatory retraining</li>
+                    <li>Second violation: Suspension of system access</li>
+                    <li>Third violation: Termination of employment</li>
+                </ul>
+
+                <p style="margin-top: 20px; font-weight: 600;">These requirements are non-negotiable and apply to ALL employees without exception.</p>
+            </div>
+            <div class="policy-footer">
+                <button class="btn-secondary" onclick="closeModal('policyModal2')">Cancel</button>
+                <button class="btn-primary" onclick="confirmPolicy('policyModal2')">✓ I Agree</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="policy-modal" id="policyModal3">
+        <div class="policy-modal-content">
+            <div class="policy-header"><h2>📄 IT Compliance Documentation</h2></div>
+            <div class="policy-body">
+                <h3>Complete IT Compliance Documentation</h3>
+                <p>All employees must read and understand the following IT policies and procedures:</p>
+
+                <h3>1. Acceptable Use Policy (AUP)</h3>
+                <ul>
+                    <li>Guidelines for appropriate use of company IT resources.</li>
+                    <li>Prohibited activities: hacking, data theft, inappropriate content, gaming, streaming.</li>
+                    <li>Bandwidth limitations and fair usage policies.</li>
+                    <li>Personal use must not interfere with business operations.</li>
+                    <li>Company has right to monitor all activities.</li>
+                </ul>
+
+                <h3>2. Remote Work Security</h3>
+                <ul>
+                    <li>Work-from-home setup requirements: secure internet, private workspace, locked door.</li>
+                    <li>VPN mandatory for all remote access to company systems.</li>
+                    <li>Public WiFi usage strictly prohibited for company work.</li>
+                    <li>Screen visibility: Do not work where others can see sensitive information.</li>
+                    <li>Virtual meeting guidelines: Use professional backgrounds, enable camera/microphone security.</li>
+                    <li>Incident reporting: Report any security issues at home office immediately.</li>
+                </ul>
+
+                <h3>3. Personal Device Policy (BYOD - Bring Your Own Device)</h3>
+                <ul>
+                    <li>Personal devices may be used only with IT approval and MDM enrollment.</li>
+                    <li>Company retains right to remote wipe device if security is compromised.</li>
+                    <li>Separation of personal and company data is mandatory.</li>
+                    <li>Company is not responsible for personal device damage.</li>
+                    <li>Device must meet minimum security standards (updated OS, antivirus, etc.).</li>
+                </ul>
+
+                <h3>4. Backup & Data Recovery Procedures</h3>
+                <ul>
+                    <li>All critical work must be backed up to company cloud storage automatically.</li>
+                    <li>Do NOT rely on personal backups for company data.</li>
+                    <li>Data recovery requests must go through IT department.</li>
+                    <li>Company maintains backup copies for 90 days.</li>
+                    <li>Email backups are retained for 1 year.</li>
+                </ul>
+
+                <h3>5. Software License Compliance</h3>
+                <ul>
+                    <li>Use only licensed software approved by IT department.</li>
+                    <li>Personal software licenses cannot be used for company work.</li>
+                    <li>Software piracy is strictly prohibited and illegal.</li>
+                    <li>IT will conduct quarterly software audits.</li>
+                    <li>Violators face termination and potential legal action.</li>
+                </ul>
+
+                <h3>6. Asset Management</h3>
+                <ul>
+                    <li>All devices are company property - employee is responsible for them.</li>
+                    <li>Report lost or stolen devices within 24 hours.</li>
+                    <li>Return all devices before leaving company.</li>
+                    <li>Device serial numbers must be registered with IT.</li>
+                </ul>
+
+                <h3>7. Data Classification</h3>
+                <ul>
+                    <li><strong>Public:</strong> Information that can be shared externally without risk.</li>
+                    <li><strong>Internal:</strong> General company information not for external sharing.</li>
+                    <li><strong>Confidential:</strong> Sensitive company data - requires encryption and restricted access.</li>
+                    <li><strong>Restricted:</strong> Highly sensitive (financial, HR, legal) - maximum security required.</li>
+                </ul>
+
+                <p style="margin-top: 20px; font-weight: 600; color: #e11d48;">Understanding these policies is essential for protecting company data and your professional responsibility.</p>
+            </div>
+            <div class="policy-footer">
+                <button class="btn-secondary" onclick="closeModal('policyModal3')">Cancel</button>
+                <button class="btn-primary" onclick="confirmPolicy('policyModal3')">✓ I Agree</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="policy-modal" id="policyModal4">
+        <div class="policy-modal-content">
+            <div class="policy-header"><h2>📋 HR & Compliance Documents</h2></div>
+            <div class="policy-body">
+                <h3>Human Resources & Compliance Policies</h3>
+
+                <h3>1. Code of Conduct</h3>
+                <ul>
+                    <li><strong>Professional Behavior:</strong> Treat all colleagues with respect and professionalism.</li>
+                    <li><strong>Conflict of Interest:</strong> Disclose any conflicts that may impact your work.</li>
+                    <li><strong>Gifts & Hospitality:</strong> Do not accept gifts that could influence professional judgment.</li>
+                    <li><strong>Confidentiality:</strong> Maintain confidentiality of company and client information even after employment ends.</li>
+                    <li><strong>Compliance:</strong> Comply with all laws and company policies.</li>
+                    <li><strong>Violations:</strong> Any violations will be investigated and may result in disciplinary action.</li>
+                </ul>
+
+                <h3>2. Anti-Harassment & Anti-Discrimination Policy</h3>
+                <ul>
+                    <li><strong>Zero Tolerance:</strong> Company has zero tolerance for harassment, bullying, or discrimination.</li>
+                    <li><strong>Protected Categories:</strong> No discrimination based on race, color, religion, sex, age, disability, nationality, or sexual orientation.</li>
+                    <li><strong>Sexual Harassment:</strong> Unwelcome sexual conduct, advances, or requests are strictly prohibited.</li>
+                    <li><strong>Reporting:</strong> Report any harassment to HR immediately. All reports are investigated confidentially.</li>
+                    <li><strong>Protection:</strong> Company will not tolerate retaliation against anyone reporting harassment.</li>
+                    <li><strong>Consequences:</strong> Confirmed violations result in disciplinary action up to termination.</li>
+                </ul>
+
+                <h3>3. Leave & Attendance Policy</h3>
+                <ul>
+                    <li><strong>Annual Leave:</strong> Entitled to X days per year, carryover limit Y days.</li>
+                    <li><strong>Sick Leave:</strong> Entitled to Z days per year for medical purposes.</li>
+                    <li><strong>Casual Leave:</strong> Available for personal needs, approval required.</li>
+                    <li><strong>Maternity Leave:</strong> As per government regulations and company policy.</li>
+                    <li><strong>Paternity Leave:</strong> As per company policy.</li>
+                    <li><strong>Attendance:</strong> Punctuality is expected. Excessive absenteeism may result in disciplinary action.</li>
+                    <li><strong>Notice Period:</strong> Provide advance notice for leave requests when possible.</li>
+                </ul>
+
+                <h3>4. Compensation & Benefits</h3>
+                <ul>
+                    <li><strong>Salary:</strong> Paid monthly on specified date.</li>
+                    <li><strong>Bonus:</strong> Annual bonus based on performance and company results.</li>
+                    <li><strong>Health Insurance:</strong> Comprehensive health coverage for employee and family.</li>
+                    <li><strong>Retirement Benefits:</strong> Provident fund contributions as per law.</li>
+                    <li><strong>Other Benefits:</strong> Festival bonuses, gratuity, leave encashment as applicable.</li>
+                    <li><strong>Performance Incentives:</strong> Based on KPIs and goals achievement.</li>
+                </ul>
+
+                <h3>5. Data Privacy & GDPR Compliance</h3>
+                <ul>
+                    <li><strong>Personal Data:</strong> Company collects only necessary personal data for employment purposes.</li>
+                    <li><strong>Data Protection:</strong> Personal data is protected with security measures and encryption.</li>
+                    <li><strong>Data Usage:</strong> Data is used only for authorized HR and business purposes.</li>
+                    <li><strong>Data Rights:</strong> Employees have rights to access, correct, and delete their personal data.</li>
+                    <li><strong>Data Breach:</strong> Any breach will be reported within 72 hours as per GDPR.</li>
+                    <li><strong>Third Party Sharing:</strong> Data is not shared with third parties without consent unless legally required.</li>
+                    <li><strong>Compliance:</strong> Company complies with all data privacy laws (GDPR, CCPA, local regulations).</li>
+                </ul>
+
+                <h3>6. Performance Management</h3>
+                <ul>
+                    <li><strong>Reviews:</strong> Annual performance reviews conducted to assess progress and goals.</li>
+                    <li><strong>Feedback:</strong> Regular feedback provided for continuous improvement.</li>
+                    <li><strong>Development:</strong> Training and development opportunities provided.</li>
+                    <li><strong>Appraisals:</strong> Performance impacts salary increases and promotions.</li>
+                </ul>
+
+                <h3>7. Grievance & Complaint Procedure</h3>
+                <ul>
+                    <li><strong>Reporting:</strong> Report grievances to direct manager or HR department.</li>
+                    <li><strong>Investigation:</strong> All complaints are investigated objectively and confidentially.</li>
+                    <li><strong>Resolution:</strong> Resolution target is 30 days from complaint date.</li>
+                    <li><strong>Appeal:</strong> Right to appeal if decision is unsatisfactory.</li>
+                    <li><strong>Protection:</strong> No retaliation for filing genuine complaints.</li>
+                </ul>
+
+                <h3>8. Workplace Health & Safety</h3>
+                <ul>
+                    <li><strong>Safety:</strong> Company maintains safe working conditions.</li>
+                    <li><strong>Hazard Reporting:</strong> Report any safety hazards immediately.</li>
+                    <li><strong>Ergonomics:</strong> Workstations set up ergonomically to prevent injuries.</li>
+                    <li><strong>Mental Health:</strong> Employee assistance program available for mental health support.</li>
+                </ul>
+
+                <p style="margin-top: 20px; font-weight: 600;">All policies are designed to create a safe, respectful, and compliant workplace for all employees.</p>
+            </div>
+            <div class="policy-footer">
+                <button class="btn-secondary" onclick="closeModal('policyModal4')">Cancel</button>
+                <button class="btn-primary" onclick="confirmPolicy('policyModal4')">✓ I Agree</button>
+            </div>
         </div>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1>📋 IT & HR Compliance Portal</h1>
-            <p>Secure Employee Verification System</p>
-            
+            <h1>📋 GRETEX IT & HR Compliance Portal v4.2</h1>
             <div class="step-indicator">
                 <div class="step-indicator-fill" id="stepProgress"></div>
                 <div class="step-dot active" id="dot1">1</div>
                 <div class="step-dot" id="dot2">2</div>
                 <div class="step-dot" id="dot3">3</div>
                 <div class="step-dot" id="dot4">4</div>
+                <div class="step-dot" id="dot5">5</div>
             </div>
         </div>
 
@@ -192,49 +484,105 @@
 
             <form id="complianceForm">
                 
+                <!-- STEP 1 -->
                 <div class="step-content active" id="step1">
                     <div class="section-title">🔐 Identity Verification</div>
-                    <p style="color: var(--text-light); margin-bottom: 15px;">Enter your details to begin.</p>
+                    <p style="color: var(--text-light); margin-bottom: 15px;">Enter your credentials to verify your identity.</p>
                     
                     <label style="font-weight: 600;">Employee ID *</label>
-                    <input type="text" id="empId" name="empId" placeholder="e.g. EMP001" required>
+                    <input type="text" id="empId" placeholder="e.g. EMP001" required>
                     
                     <label style="font-weight: 600;">Email Address *</label>
-                    <input type="email" id="email" name="email" placeholder="your.email@company.com" required>
+                    <input type="email" id="email" placeholder="your.email@company.com" required>
 
-                    <div id="empInfoBox" style="display:none; background: #eff6ff; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #bfdbfe; font-size: 14px;">
+                    <div id="empInfoBox" style="display:none; background: #eff6ff; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #bfdbfe;">
                         <strong style="color:var(--primary)">Welcome, <span id="empNameDisplay"></span></strong> (<span id="empDeptDisplay"></span>)
                     </div>
 
-                    <div class="validation-msg" id="msg-step1">Please enter both ID and Email to verify.</div>
+                    <div class="validation-msg" id="msg-step1">Please enter both ID and Email.</div>
 
                     <div class="nav-buttons" style="justify-content: flex-end;">
-                        <button type="button" class="btn-primary" id="verifyBtn" onclick="verifyAndNext()">Verify & Continue ➔</button>
+                        <button type="button" class="btn-primary" onclick="verifyAndSendOTP()">Send OTP ➔</button>
                     </div>
                 </div>
 
+                <!-- STEP 1A: OTP VERIFICATION (NEW!) -->
+                <div class="step-content" id="step1a">
+                    <div class="section-title">📧 Verify Your Email</div>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">We've sent a One-Time Password (OTP) to your email address. Enter it below to verify.</p>
+                    
+                    <div style="background: #eff6ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary);">
+                        <strong style="color: var(--primary);">OTP sent to:</strong>
+                        <div id="otpEmailDisplay" style="font-size: 14px; color: var(--text-dark); margin-top: 5px; font-weight: 600;"></div>
+                        <div style="font-size: 12px; color: var(--text-light); margin-top: 8px;">⏱️ OTP expires in 10 minutes</div>
+                    </div>
+
+                    <label style="font-weight: 600;">Enter 6-Digit OTP *</label>
+                    <input type="text" id="otpInput" placeholder="000000" maxlength="6" style="font-size: 24px; letter-spacing: 10px; text-align: center; font-weight: bold; margin-bottom: 15px;" required>
+                    
+                    <div class="validation-msg" id="msg-otp">Invalid OTP or expired. Please try again.</div>
+
+                    <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--success); font-size: 14px;">
+                        <strong>✓ Check your email inbox</strong><br>
+                        Look for email with subject: "Your Compliance Form OTP"<br>
+                        <span style="font-size: 12px; color: var(--text-light);">If not found, check spam/junk folder</span>
+                    </div>
+
+                    <div id="otpAttempts" style="color: var(--text-light); font-size: 13px; margin-bottom: 20px; text-align: center;">
+                        Attempts remaining: <span id="attemptsCount" style="font-weight: 600; color: var(--accent);">3</span>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-secondary" onclick="backToStep1()">🡐 Back</button>
+                        <button type="button" class="btn-primary" onclick="verifyOTP()">Verify OTP ✓</button>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                        <button type="button" style="background: none; border: none; color: var(--primary); cursor: pointer; font-weight: 600; text-decoration: underline; font-size: 14px;" onclick="resendOTP()">
+                            Didn't receive OTP? Resend
+                        </button>
+                    </div>
+                </div>
                 <div class="step-content" id="step2">
                     <div class="section-title">💻 IT Compliance</div>
                     
                     <label style="font-weight: 600;">1. Have you read the IT Compliance policy? *</label>
                     <div class="yes-no-group">
-                        <label class="radio-item"><input type="radio" name="readCompliance" value="yes" required><span>Yes</span></label>
-                        <label class="radio-item"><input type="radio" name="readCompliance" value="no" required><span>No</span></label>
+                        <label class="radio-item">
+                            <input type="radio" name="readCompliance" value="yes" onchange="openPolicy('policyModal1')">
+                            <span>Yes</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="readCompliance" value="no">
+                            <span>No</span>
+                        </label>
                     </div>
 
                     <label style="font-weight: 600;">2. Are you aware of IT Compliance requirements? *</label>
                     <div class="yes-no-group">
-                        <label class="radio-item"><input type="radio" name="awareCompliance" value="yes" required><span>Yes</span></label>
-                        <label class="radio-item"><input type="radio" name="awareCompliance" value="no" required><span>No</span></label>
+                        <label class="radio-item">
+                            <input type="radio" name="awareCompliance" value="yes" onchange="openPolicy('policyModal2')">
+                            <span>Yes</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="awareCompliance" value="no">
+                            <span>No</span>
+                        </label>
                     </div>
 
-                    <label style="font-weight: 600;">3. Have you read all documents related to IT Compliance? *</label>
+                    <label style="font-weight: 600;">3. Have you read all IT Compliance documents? *</label>
                     <div class="yes-no-group">
-                        <label class="radio-item"><input type="radio" name="readAllDocs" value="yes" required><span>Yes</span></label>
-                        <label class="radio-item"><input type="radio" name="readAllDocs" value="no" required><span>No</span></label>
+                        <label class="radio-item">
+                            <input type="radio" name="readAllDocs" value="yes" onchange="openPolicy('policyModal3')">
+                            <span>Yes</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="readAllDocs" value="no">
+                            <span>No</span>
+                        </label>
                     </div>
 
-                    <div class="validation-msg" id="msg-step2">Please answer all questions above.</div>
+                    <div class="validation-msg" id="msg-step2">Please answer all questions.</div>
 
                     <div class="nav-buttons">
                         <button type="button" class="btn-secondary" onclick="prevStep(1)">🡐 Back</button>
@@ -242,48 +590,19 @@
                     </div>
                 </div>
 
+                <!-- STEP 3 -->
                 <div class="step-content" id="step3">
-                    <div class="section-title">📸 System Screenshots</div>
-                    <p style="color: var(--text-light); margin-bottom: 20px;">Please upload all 5 required folder screenshots.</p>
+                    <div class="section-title">🖥️ Your Assigned Assets</div>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">Upload screenshots for each assigned asset/server.</p>
                     
-                    <div class="file-grid">
-                        <div class="file-upload-card" id="card-fileDesktop" onclick="document.getElementById('fileDesktop').click()">
-                            <div style="font-size: 24px;">🖥️</div>
-                            <div style="font-weight: 600; color: var(--primary);">Desktop Folder *</div>
-                            <input type="file" id="fileDesktop" name="fileDesktop" accept="image/*" required onchange="handleFile(event, 'fileDesktop')">
-                            <div class="file-preview" id="preview-fileDesktop"></div>
-                        </div>
-
-                        <div class="file-upload-card" id="card-fileDownloads" onclick="document.getElementById('fileDownloads').click()">
-                            <div style="font-size: 24px;">⬇️</div>
-                            <div style="font-weight: 600; color: var(--primary);">Downloads Folder *</div>
-                            <input type="file" id="fileDownloads" name="fileDownloads" accept="image/*" required onchange="handleFile(event, 'fileDownloads')">
-                            <div class="file-preview" id="preview-fileDownloads"></div>
-                        </div>
-
-                        <div class="file-upload-card" id="card-fileDocuments" onclick="document.getElementById('fileDocuments').click()">
-                            <div style="font-size: 24px;">📄</div>
-                            <div style="font-weight: 600; color: var(--primary);">Documents Folder *</div>
-                            <input type="file" id="fileDocuments" name="fileDocuments" accept="image/*" required onchange="handleFile(event, 'fileDocuments')">
-                            <div class="file-preview" id="preview-fileDocuments"></div>
-                        </div>
-
-                        <div class="file-upload-card" id="card-fileDDrive" onclick="document.getElementById('fileDDrive').click()">
-                            <div style="font-size: 24px;">💾</div>
-                            <div style="font-weight: 600; color: var(--primary);">D-Drive *</div>
-                            <input type="file" id="fileDDrive" name="fileDDrive" accept="image/*" required onchange="handleFile(event, 'fileDDrive')">
-                            <div class="file-preview" id="preview-fileDDrive"></div>
-                        </div>
-
-                        <div class="file-upload-card" id="card-fileThisPC" onclick="document.getElementById('fileThisPC').click()">
-                            <div style="font-size: 24px;">💻</div>
-                            <div style="font-weight: 600; color: var(--primary);">This PC *</div>
-                            <input type="file" id="fileThisPC" name="fileThisPC" accept="image/*" required onchange="handleFile(event, 'fileThisPC')">
-                            <div class="file-preview" id="preview-fileThisPC"></div>
-                        </div>
+                    <div class="assigned-assets-container">
+                        <div class="assigned-assets-title">✓ Your Assets & Servers:</div>
+                        <div id="assignedAssetsDisplay"></div>
                     </div>
 
-                    <div class="validation-msg" id="msg-step3">Please upload all 5 required screenshots.</div>
+                    <div id="fileUploadContainer"></div>
+
+                    <div class="validation-msg" id="msg-step3">Please upload all required files.</div>
 
                     <div class="nav-buttons">
                         <button type="button" class="btn-secondary" onclick="prevStep(2)">🡐 Back</button>
@@ -291,38 +610,44 @@
                     </div>
                 </div>
 
+                <!-- STEP 4 -->
                 <div class="step-content" id="step4">
                     <div class="section-title">📝 HR & Final Declaration</div>
                     
                     <label style="font-weight: 600;">1. Have you read all HR & Compliance documents? *</label>
                     <div class="yes-no-group">
-                        <label class="radio-item"><input type="radio" name="readHRDocs" value="yes" required><span>Yes</span></label>
-                        <label class="radio-item"><input type="radio" name="readHRDocs" value="no" required><span>No</span></label>
+                        <label class="radio-item">
+                            <input type="radio" name="readHRDocs" value="yes" onchange="openPolicy('policyModal4')">
+                            <span>Yes</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="readHRDocs" value="no">
+                            <span>No</span>
+                        </label>
                     </div>
 
                     <label style="font-weight: 600;">2. Document Verification *</label>
                     <div class="yes-no-group" style="grid-template-columns: 1fr;">
-                        <label class="radio-item"><input type="radio" name="readCarefully" value="yes" required><span>Yes, I have read all documents carefully</span></label>
-                        <label class="radio-item"><input type="radio" name="readCarefully" value="no" required><span>No, I need more time</span></label>
+                        <label class="radio-item"><input type="radio" name="readCarefully" value="yes" required><span>Yes, I have read all documents</span></label>
                     </div>
 
-                    <div style="background: #f0fdf4; border-left: 4px solid var(--success); padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; line-height: 1.5;">
-                        "I hereby declare that all information provided by me is absolutely true and accurate. If found false, I take full responsibility as per company policy."
+                    <div style="background: #f0fdf4; border-left: 4px solid var(--success); padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 14px;">
+                        "I hereby declare that all information provided is absolutely true and accurate."
                     </div>
 
-                    <label style="display: flex; gap: 10px; cursor: pointer; margin-bottom: 20px; align-items: flex-start;">
-                        <input type="checkbox" id="agreeDeclaration" name="agreeDeclaration" required style="width: 20px; height: 20px; margin-top: 2px;">
-                        <span style="font-weight: 600; font-size: 14px;">I confirm and agree with the above declaration. *</span>
+                    <label style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <input type="checkbox" id="agreeDeclaration" required>
+                        <span style="font-weight: 600;">I confirm and agree with the above declaration. *</span>
                     </label>
 
                     <label style="font-weight: 600;">Signature Date *</label>
-                    <input type="date" id="signatureDate" name="signatureDate" required>
+                    <input type="date" id="signatureDate" required>
 
-                    <div class="validation-msg" id="msg-step4">Please complete all fields and agree to the declaration.</div>
+                    <div class="validation-msg" id="msg-step4">Please complete all fields.</div>
 
                     <div class="nav-buttons">
                         <button type="button" class="btn-secondary" onclick="prevStep(3)">🡐 Back</button>
-                        <button type="submit" class="btn-primary" id="submitBtn" style="background: var(--success);">Submit Form 🚀</button>
+                        <button type="submit" class="btn-primary" style="background: var(--success);">Submit Form 🚀</button>
                     </div>
                 </div>
 
@@ -331,79 +656,74 @@
     </div>
 
     <script>
-        // ⚠️ PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE:
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzLlYCxEpl6sPzcnMGIcgB8uYn9e5ngG-koWRExrr0ulOFXB1Ir-rkIlJnWjVesWuW/exec'; 
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxzLlYCxEpl6sPzcnMGIcgB8uYn9e5ngG-koWRExrr0ulOFXB1Ir-rkIlJnWjVesWuW/exec';
         let currentEmployee = null;
+        let assignedAssets = [];
+        let generatedOTP = null;
+        let otpAttempts = 3;
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('signatureDate').valueAsDate = new Date();
             document.getElementById('complianceForm').addEventListener('submit', handleSubmit);
-            
-            document.querySelectorAll('input').forEach(el => {
-                el.addEventListener('change', function() {
-                    this.classList.remove('error-border');
-                    if(this.type === 'radio' || this.type === 'checkbox') {
-                        this.closest('div').classList.remove('error-border');
-                        Array.from(this.closest('div').children).forEach(child => child.classList.remove('error-border'));
-                    }
-                });
+            document.getElementById('otpInput').addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') verifyOTP();
             });
         });
 
-        // LOADER UI FUNCTIONS
-        function setLoader(title, subtitle) {
-            document.getElementById('loaderText').textContent = title;
-            document.getElementById('loaderSubText').textContent = subtitle;
-        }
-
+        function setLoader(text) { document.getElementById('loaderText').textContent = text; }
         function showLoader() { document.getElementById('loaderOverlay').classList.add('show'); }
         function hideLoader() { document.getElementById('loaderOverlay').classList.remove('show'); }
+        function openPolicy(id) { document.getElementById(id).classList.add('show'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+        function confirmPolicy(id) { document.getElementById(id).classList.remove('show'); }
 
-        // WIZARD NAVIGATION LOGIC
         function updateDots(step) {
-            for(let i=1; i<=4; i++) {
+            for(let i=1; i<=5; i++) {
                 const dot = document.getElementById(`dot${i}`);
-                if(i < step) { dot.className = 'step-dot completed'; }
-                else if(i === step) { dot.className = 'step-dot active'; }
-                else { dot.className = 'step-dot'; }
+                if(dot) {
+                    dot.className = i < step ? 'step-dot completed' : i === step ? 'step-dot active' : 'step-dot';
+                }
             }
-            const progress = ((step - 1) / 3) * 100;
-            document.getElementById('stepProgress').style.width = progress + '%';
+            document.getElementById('stepProgress').style.width = ((step - 1) / 4) * 100 + '%';
         }
 
-        function showStep(stepNum) {
+        function showStep(stepId) {
             document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
-            document.getElementById(`step${stepNum}`).classList.add('active');
-            updateDots(stepNum);
+            document.getElementById(stepId).classList.add('active');
+            
+            // Update dots based on step
+            if(stepId === 'step1') updateDots(1);
+            else if(stepId === 'step1a') updateDots(2);
+            else if(stepId === 'step2') updateDots(3);
+            else if(stepId === 'step3') updateDots(4);
+            else if(stepId === 'step4') updateDots(5);
+            
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        function prevStep(stepNum) { showStep(stepNum); }
-
-        // STEP 1 VALIDATION & API CALL 
-        async function verifyAndNext() {
+        // STEP 1: Verify and Send OTP
+        async function verifyAndSendOTP() {
             const empId = document.getElementById('empId');
             const email = document.getElementById('email');
             const msg = document.getElementById('msg-step1');
 
-            empId.classList.remove('error-border');
-            email.classList.remove('error-border');
-            msg.style.display = 'none';
-
             if (!empId.value.trim() || !email.value.trim()) {
-                if(!empId.value) empId.classList.add('error-border');
-                if(!email.value) email.classList.add('error-border');
-                msg.style.display = 'block'; return;
+                msg.style.display = 'block';
+                return;
             }
 
-            setLoader("Searching your data...", "Connecting to secure database");
+            setLoader("Verifying credentials...");
             showLoader();
-            await new Promise(r => setTimeout(r, 800));
-            setLoader("Verifying credentials...", "Checking Employee ID and Email");
 
             try {
-                const payload = { action: 'verifyEmployee', empId: empId.value, email: email.value };
-                const res = await fetch(GOOGLE_APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'verifyEmployee',
+                        empId: empId.value,
+                        email: email.value
+                    })
+                });
                 const data = await res.json();
 
                 if (data.success) {
@@ -411,143 +731,323 @@
                     document.getElementById('empNameDisplay').textContent = currentEmployee.name;
                     document.getElementById('empDeptDisplay').textContent = currentEmployee.department;
                     document.getElementById('empInfoBox').style.display = 'block';
-                    empId.readOnly = true; email.readOnly = true;
+                    empId.readOnly = true;
+                    email.readOnly = true;
+
+                    setLoader("Sending OTP to your email...");
+                    await new Promise(r => setTimeout(r, 800));
+
+                    // Fetch assets while waiting
+                    const assetRes = await fetch(GAS_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: 'getEmployeeAssets',
+                            empId: empId.value
+                        })
+                    });
+                    const assetData = await assetRes.json();
+                    assignedAssets = assetData.assets || [];
+
+                    // Generate and send OTP
+                    await sendOTPEmail(email.value, currentEmployee.name);
                     
                     hideLoader();
-                    setTimeout(() => { showStep(2); }, 300);
+                    showOTPStep(email.value);
                 } else {
                     hideLoader();
-                    msg.textContent = '❌ ' + data.message;
-                    msg.style.display = 'block';
+                    document.getElementById('msg-step1').textContent = '❌ ' + data.message;
+                    document.getElementById('msg-step1').style.display = 'block';
                 }
             } catch (err) {
                 hideLoader();
-                msg.textContent = 'Connection error. Please try again.';
-                msg.style.display = 'block';
+                document.getElementById('msg-step1').textContent = 'Error. Try again.';
+                document.getElementById('msg-step1').style.display = 'block';
             }
         }
 
-        function validateAndNext(currentStepNum, nextStepNum) {
-            const stepEl = document.getElementById(`step${currentStepNum}`);
-            const requiredInputs = Array.from(stepEl.querySelectorAll('[required]'));
-            const msg = document.getElementById(`msg-step${currentStepNum}`);
-            let isValid = true;
+        // Generate and send OTP
+        async function sendOTPEmail(email, name) {
+            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            otpAttempts = 3;
+            
+            try {
+                await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'sendOTP',
+                        email: email,
+                        name: name,
+                        otp: generatedOTP
+                    })
+                });
+            } catch (err) {
+                console.log('Error sending OTP:', err);
+            }
+        }
 
-            requiredInputs.forEach(input => {
-                if (input.type === 'radio') {
-                    const groupName = input.name;
-                    const isChecked = stepEl.querySelector(`input[name="${groupName}"]:checked`);
-                    if (!isChecked) {
-                        isValid = false;
-                        document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => r.closest('.radio-item').classList.add('error-border'));
-                    }
-                } else if (input.type === 'file') {
-                    if (input.files.length === 0) {
-                        isValid = false;
-                        document.getElementById(`card-${input.id}`).classList.add('error-border');
-                    }
-                } else if (input.type === 'checkbox') {
-                    if (!input.checked) {
-                        isValid = false;
-                        input.closest('label').style.color = 'var(--accent)';
-                    } else {
-                        input.closest('label').style.color = 'inherit';
-                    }
+        // Show OTP verification step
+        function showOTPStep(email) {
+            document.getElementById('otpEmailDisplay').textContent = email;
+            document.getElementById('attemptsCount').textContent = otpAttempts;
+            document.getElementById('otpInput').value = '';
+            document.getElementById('msg-otp').style.display = 'none';
+            showStep('step1a');
+        }
+
+        // Verify OTP
+        function verifyOTP() {
+            const inputOTP = document.getElementById('otpInput').value.trim();
+            const msg = document.getElementById('msg-otp');
+
+            if (!inputOTP || inputOTP.length !== 6) {
+                msg.style.display = 'block';
+                msg.textContent = 'Please enter a 6-digit OTP.';
+                return;
+            }
+
+            if (inputOTP === generatedOTP) {
+                msg.style.display = 'none';
+                setLoader("OTP Verified! Loading form...");
+                showLoader();
+                setTimeout(() => {
+                    hideLoader();
+                    showStep('step2');
+                }, 1000);
+            } else {
+                otpAttempts--;
+                document.getElementById('attemptsCount').textContent = otpAttempts;
+                
+                if (otpAttempts <= 0) {
+                    msg.textContent = 'Too many failed attempts. Please go back and try again.';
+                    document.getElementById('otpInput').disabled = true;
                 } else {
-                    if (input.value.trim() === '') {
-                        isValid = false;
-                        input.classList.add('error-border');
-                    }
+                    msg.textContent = `Invalid OTP. ${otpAttempts} attempts remaining.`;
                 }
+                msg.style.display = 'block';
+                document.getElementById('otpInput').value = '';
+            }
+        }
+
+        // Resend OTP
+        async function resendOTP() {
+            const email = document.getElementById('email').value;
+            setLoader("Sending OTP again...");
+            showLoader();
+            await sendOTPEmail(email, currentEmployee.name);
+            hideLoader();
+            document.getElementById('otpInput').value = '';
+            document.getElementById('attemptsCount').textContent = 3;
+            otpAttempts = 3;
+            document.getElementById('msg-otp').style.display = 'none';
+            alert('OTP sent to your email!');
+        }
+
+        // Back to Step 1
+        function backToStep1() {
+            document.getElementById('empId').readOnly = false;
+            document.getElementById('email').readOnly = false;
+            showStep('step1');
+        }
+
+        function displayAssignedAssets() {
+            const display = document.getElementById('assignedAssetsDisplay');
+            const container = document.getElementById('fileUploadContainer');
+            
+            display.innerHTML = '';
+            container.innerHTML = '';
+
+            if (!assignedAssets || assignedAssets.length === 0) {
+                display.innerHTML = '<div style="color: var(--text-light);">No assets assigned.</div>';
+                return;
+            }
+
+            // Show chips
+            assignedAssets.forEach(asset => {
+                const chip = document.createElement('div');
+                chip.className = 'assigned-asset-chip';
+                chip.textContent = asset.name;
+                display.appendChild(chip);
             });
 
-            if (isValid) { msg.style.display = 'none'; showStep(nextStepNum); } 
-            else { msg.style.display = 'block'; }
+            // Generate file sections
+            assignedAssets.forEach((asset, idx) => {
+                const section = document.createElement('div');
+                section.className = 'asset-section';
+                
+                section.innerHTML = `
+                    <div class="asset-section-title">
+                        <div class="asset-badge">${idx + 1}</div>
+                        ${asset.name}
+                    </div>
+                    <div class="file-grid">
+                        <div class="file-upload-card" onclick="document.getElementById('fileDesktop-${idx}').click()">
+                            <div class="file-icon">🖥️</div>
+                            <div style="font-weight: 600; color: var(--primary);">Desktop</div>
+                            <input type="file" id="fileDesktop-${idx}" accept="image/*" onchange="handleFile(event, 'fileDesktop', ${idx})">
+                            <div class="file-preview" id="prev-fileDesktop-${idx}"></div>
+                        </div>
+                        <div class="file-upload-card" onclick="document.getElementById('fileDownloads-${idx}').click()">
+                            <div class="file-icon">⬇️</div>
+                            <div style="font-weight: 600; color: var(--primary);">Downloads</div>
+                            <input type="file" id="fileDownloads-${idx}" accept="image/*" onchange="handleFile(event, 'fileDownloads', ${idx})">
+                            <div class="file-preview" id="prev-fileDownloads-${idx}"></div>
+                        </div>
+                        <div class="file-upload-card" onclick="document.getElementById('fileDocuments-${idx}').click()">
+                            <div class="file-icon">📄</div>
+                            <div style="font-weight: 600; color: var(--primary);">Documents</div>
+                            <input type="file" id="fileDocuments-${idx}" accept="image/*" onchange="handleFile(event, 'fileDocuments', ${idx})">
+                            <div class="file-preview" id="prev-fileDocuments-${idx}"></div>
+                        </div>
+                        <div class="file-upload-card" onclick="document.getElementById('fileDDrive-${idx}').click()">
+                            <div class="file-icon">💾</div>
+                            <div style="font-weight: 600; color: var(--primary);">D-Drive</div>
+                            <input type="file" id="fileDDrive-${idx}" accept="image/*" onchange="handleFile(event, 'fileDDrive', ${idx})">
+                            <div class="file-preview" id="prev-fileDDrive-${idx}"></div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(section);
+            });
         }
 
-        function handleFile(e, fieldId) {
-            const file = e.target.files[0];
-            const preview = document.getElementById('preview-' + fieldId);
-            const card = document.getElementById('card-' + fieldId);
-            card.classList.remove('error-border');
+        function validateAndNext(current, next) {
+            const stepMap = {2: 'step2', 3: 'step3', 4: 'step4'};
+            
+            if (current === 2) {
+                const required = ['readCompliance', 'awareCompliance', 'readAllDocs'];
+                let valid = required.every(name => document.querySelector(`input[name="${name}"]:checked`));
+                
+                const msg = document.getElementById('msg-step2');
+                if (valid) {
+                    msg.style.display = 'none';
+                    displayAssignedAssets();
+                    showStep(stepMap[next]);
+                } else {
+                    msg.style.display = 'block';
+                }
+                return;
+            }
 
+            if (current === 3) {
+                let valid = true;
+                for (let i = 0; i < assignedAssets.length; i++) {
+                    for (let field of ['fileDesktop', 'fileDownloads', 'fileDocuments', 'fileDDrive']) {
+                        const input = document.getElementById(`${field}-${i}`);
+                        if (!input || !input.files || !input.files.length) {
+                            valid = false;
+                        }
+                    }
+                }
+                document.getElementById('msg-step3').style.display = valid ? 'none' : 'block';
+                if (valid) showStep(stepMap[next]);
+                return;
+            }
+
+            const required = document.querySelectorAll('#step4 [required]');
+            let valid = true;
+            required.forEach(el => {
+                if (el.type === 'checkbox') {
+                    if (!el.checked) valid = false;
+                } else if (el.type === 'radio') {
+                    const group = document.querySelector(`input[name="${el.name}"]:checked`);
+                    if (!group) valid = false;
+                } else if (!el.value) {
+                    valid = false;
+                }
+            });
+            document.getElementById('msg-step4').style.display = valid ? 'none' : 'block';
+            if (valid) showStep(stepMap[next]);
+        }
+
+        function handleFile(e, field, idx) {
+            const file = e.target.files[0];
+            const preview = document.getElementById(`prev-${field}-${idx}`);
             if (file) {
                 if (file.size > 5 * 1024 * 1024) {
-                    preview.innerHTML = '<span style="color:var(--accent)">File too large (Max 5MB)</span>';
+                    preview.innerHTML = '❌ Too large';
                     e.target.value = '';
                 } else {
-                    preview.innerHTML = '✓ ' + file.name;
+                    preview.innerHTML = '✓ ' + file.name.substring(0, 20);
                 }
             }
         }
 
-        const getBase64 = (file) => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
+        const getBase64 = file => new Promise((res, rej) => {
+            const r = new FileReader();
+            r.onload = () => res(r.result);
+            r.onerror = rej;
+            r.readAsDataURL(file);
         });
 
-        // FINAL SUBMIT
         async function handleSubmit(e) {
             e.preventDefault();
-            validateAndNext(4, 4); 
-            if(document.getElementById('msg-step4').style.display === 'block') return;
-            if (!currentEmployee) return;
+            validateAndNext(4, 4);
+            if (document.getElementById('msg-step4').style.display !== 'none') return;
 
-            setLoader("Preparing data...", "Gathering your form inputs");
+            setLoader("Preparing submission...");
             showLoader();
 
             try {
+                const assets = [];
+                for (let i = 0; i < assignedAssets.length; i++) {
+                    setLoader(`Processing asset ${i+1}/${assignedAssets.length}...`);
+                    const asset = assignedAssets[i];
+                    const files = {};
+
+                    for (let field of ['fileDesktop', 'fileDownloads', 'fileDocuments', 'fileDDrive']) {
+                        const input = document.getElementById(`${field}-${i}`);
+                        if (input && input.files[0]) {
+                            const file = input.files[0];
+                            const b64 = await getBase64(file);
+                            files[field] = {
+                                name: file.name,
+                                type: file.type,
+                                data: b64.split(',')[1]
+                            };
+                        }
+                    }
+
+                    assets.push({
+                        entryType: asset.name,
+                        address: asset.name,
+                        files
+                    });
+                }
+
+                setLoader("Uploading to Google Drive...");
                 const payload = {
-                    action: 'submitForm', empId: currentEmployee.id, empName: currentEmployee.name,
-                    email: currentEmployee.email, department: currentEmployee.department
+                    action: 'submitFormMultiAsset',
+                    empId: currentEmployee.id,
+                    empName: currentEmployee.name,
+                    email: currentEmployee.email,
+                    department: currentEmployee.department,
+                    numAssets: assignedAssets.length,
+                    generalFormData: {
+                        readCompliance: document.querySelector('input[name="readCompliance"]:checked').value,
+                        awareCompliance: document.querySelector('input[name="awareCompliance"]:checked').value,
+                        readAllDocs: document.querySelector('input[name="readAllDocs"]:checked').value,
+                        readHRDocs: document.querySelector('input[name="readHRDocs"]:checked').value,
+                        readCarefully: document.querySelector('input[name="readCarefully"]:checked').value,
+                        agreeDeclaration: document.getElementById('agreeDeclaration').checked ? 'yes' : 'no',
+                        signatureDate: document.getElementById('signatureDate').value
+                    },
+                    assets
                 };
 
-                const form = document.getElementById('complianceForm');
-                const formData = new FormData(form);
-                for (let [key, value] of formData.entries()) {
-                    if (!key.startsWith('file')) payload[key] = value;
-                }
-
-                setLoader("Processing files...", "Converting images to secure format");
-                await new Promise(r => setTimeout(r, 800)); 
-
-                const fileFields = ['fileDesktop', 'fileDownloads', 'fileDocuments', 'fileDDrive', 'fileThisPC'];
-                for (let fieldId of fileFields) {
-                    const fileInput = document.getElementById(fieldId);
-                    if (fileInput.files.length > 0) {
-                        const file = fileInput.files[0];
-                        const base64String = await getBase64(file);
-                        payload[fieldId] = {
-                            name: file.name, type: file.type, data: base64String.split(',')[1]
-                        };
-                    }
-                }
-
-                setLoader("Uploading to Google Drive...", "This might take a few seconds");
-
-                const res = await fetch(GOOGLE_APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
                 const data = await res.json();
 
                 if (data.success) {
-                    document.getElementById('loaderSpinner').style.display = 'none';
-                    setLoader("✅ Successfully Submitted!", "Redirecting to home...");
-                    setTimeout(() => location.reload(), 3000);
+                    setLoader("✅ Submitted Successfully!");
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     hideLoader();
-                    showMessage('❌ Error: ' + data.message, 'error');
+                    alert('Error: ' + data.message);
                 }
             } catch (err) {
                 hideLoader();
-                showMessage('❌ Network Error while submitting.', 'error');
+                alert('Error: ' + err.message);
             }
-        }
-
-        function showMessage(msg, type) {
-            const container = document.getElementById('messageContainer');
-            container.innerHTML = `<div class="message ${type} show">${msg}</div>`;
-            window.scrollTo({top: 0, behavior: 'smooth'});
         }
     </script>
 </body>
